@@ -5,11 +5,11 @@
 <body>
 
 <form action="/" method="post">{% csrf_token %}
-    {{ form.text.errors }}
-    {{ form.text }}
-    <br/>
-    {{ form.number.errors }}
-    {{ form.number }}
+{#    {% for page in pages.all %}#}
+{#        {{ form.label }}:#}
+{#        {{ form.choice_field }}#}
+{#        <br/>#}
+{#    {% endfor %}#}
     <br/>
     <input type="submit" value="Submit answers"/>
 </form>

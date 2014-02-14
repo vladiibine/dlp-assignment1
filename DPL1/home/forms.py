@@ -1,9 +1,22 @@
 from django import forms
-from django.forms import widgets
 
 
-class PageForm(forms.Form):
-    # answers = forms.MultipleChoiceField((1, 2, 3, 6, 7, 8),
-    #                                     widget=widgets.RadioInput)
-    number = forms.IntegerField(6, 2)
-    text = forms.CharField(20, 2)
+def create_form_for_page(questions):
+    """Creates a dynamic form instance, given the questions in a page
+
+    :param questions: django.db.models.QuerySet of home.models.Question
+    :return: django.forms.Form instance
+    """
+    bases = (forms.Form,)
+    attributes = {}
+    for question in questions.all():
+        choices = []
+        for answer in question.answer_set.all():
+            choices.append((answer.id, answer.text))
+        attributes["question_%i" % question.id] = (
+            forms.ChoiceField(widget=forms.CheckboxSelectMultiple,
+                              choices=choices,
+                              label=question.text)
+        )
+    form = type("DynamicPageForm", bases, attributes)
+    return form()

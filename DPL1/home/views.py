@@ -1,15 +1,24 @@
 from django.shortcuts import render
-from home.forms import PageForm
-from home.models import Test, Page, Question, Answer
 import django.http
 from django.template import loader, RequestContext
+from home.forms import create_form_for_page
+
+from home.models import Test, Page, Question
+
 # Create your views here.
 
 def test_view(request):
     #atm testing forms
     # return django.http.HttpResponse("Hello world. Vlad was here!!!")
-    form = PageForm(request.POST)
-    return render(request, 'questionaire/asdf.html', {'form': form})
+    # form = PageForm(request.POST)
+    #tre sa returnez o clasa DynamicPageForm care sa contina toata randarea
+    # formului, pt toata pagina, si gata.
+    test = Test.objects.get(id=4)
+
+    form = create_form_for_page()
+    pages = test.page_set
+    return render(request, 'questionaire/asdf.html',
+                  {'form': form, 'pages': pages})
 
 
 def error_view(request):
@@ -29,11 +38,25 @@ def home_view(request):
     return render(request, 'questionaire/index.html', {'tests': tests})
 
 
+def show_result_view(request, test_id):
+    pass
+
+
 def pages_view(request, test_id, page_id=1):
+    if page_id == 0:
+        return show_result_view(request, test_id)
     test = Test.objects.get(id=test_id)
     page = Page.objects.get(id=page_id)
     questions = Question.objects.filter(page__test_id=test_id, page_id=page_id)
-    form_id = "form%i_%i" % (test.id, page.id)
+    next_pages = Page.objects.filter(id__gt=page_id)
+    if next_pages.count() == 1:
+        next_page_id = next_pages[1].id
+    else:
+        next_page_id = 0
+    form = create_form_for_page(questions)
     return render(request, 'questionaire/test_page.html',
                   {'questions': questions, 'page': page, 'test': test,
-                   'form_id': form_id})
+                   'next_page_id': next_page_id, 'form': form})
+
+
+
