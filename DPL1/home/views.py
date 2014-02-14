@@ -50,7 +50,7 @@ def pages_view(request, test_id, page_id=1):
     questions = Question.objects.filter(page__test_id=test_id, page_id=page_id)
     next_pages = Page.objects.filter(id__gt=page_id)
     if next_pages.count() == 1:
-        next_page_id = next_pages[1].id
+        next_page_id = next_pages[0].id
     else:
         next_page_id = 0
     form = create_form_for_page(questions)
