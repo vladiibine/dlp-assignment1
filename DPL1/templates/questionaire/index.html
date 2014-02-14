@@ -1,0 +1,26 @@
+{#<h1>#}
+{#    the model that I sent, {{ vwh_model_value }}<br/>#}
+{#    the rest should be crap!:#}
+{#</h1>#}
+{##}
+{#{% if latest_poll_list %}#}
+{#    <ul>#}
+{#    {% for poll in latest_poll_list %}#}
+{#        <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>#}
+{#    {% endfor %}#}
+{#    </ul>#}
+{#{% else %}#}
+{#    <p>No polls are available.</p>#}
+{#{% endif %}#}
+
+<h1> Welcome to the awesomest testing site </h1>
+<h2> hold on... you're about to shit your self in your pantz</h2>
+</br>
+</br>
+<table>
+    {% for test in tests %}
+        <tr>
+            <td>{{ test }}</td>
+        </tr>
+    {% endfor %}
+</table>

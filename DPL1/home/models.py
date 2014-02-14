@@ -12,6 +12,12 @@ class Test(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
 
+    def __str__(self):
+        return u"{0:s}".format(self.name)
+
+    def __unicode__(self):
+        return str(self)
+
 
 class Page(models.Model):
     """Model for the Page.
@@ -28,6 +34,12 @@ class Page(models.Model):
         """
         return "Page number {0:s}".format(self.sequence)
 
+    def __str__(self):
+        return u"Pagina {0:s}".format(self.get_name())
+
+    def __unicode__(self):
+        return str(self)
+
 
 class Question(models.Model):
     """Model for the Question.
@@ -37,6 +49,9 @@ class Question(models.Model):
     page = models.ForeignKey(Page)
     text = models.CharField(max_length=100)
     sequence = models.IntegerField(null=True)
+
+    def __str__(self):
+        return u"{0:s}".format(self.text)
 
 
 class Answer(models.Model):
@@ -48,3 +63,6 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     text = models.CharField(max_length=50)
     points = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0:s}".format(self.text)

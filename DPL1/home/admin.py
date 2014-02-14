@@ -19,12 +19,12 @@ class AnswerInline(admin.TabularInline):
 
 class TestAdmin(admin.ModelAdmin):
     inlines = (PageInline,)
+    list_display = ('name', 'description')
     # ordering = 1
 
 
 class PageAdmin(admin.ModelAdmin):
     inlines = (QuestionInline,)
-    list_display = ["get_name"]
 
 
 class QuestionAdmin(admin.ModelAdmin):
