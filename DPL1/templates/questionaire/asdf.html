@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title> first html page the could work</title>
+</head>
+<body>
+
+<form action="/" method="post">{% csrf_token %}
+    {{ form.text.errors }}
+    {{ form.text }}
+    <br/>
+    {{ form.number.errors }}
+    {{ form.number }}
+    <br/>
+    <input type="submit" value="Submit answers"/>
+</form>
+</body>
+</html>

@@ -25,6 +25,7 @@ class TestAdmin(admin.ModelAdmin):
 
 class PageAdmin(admin.ModelAdmin):
     inlines = (QuestionInline,)
+    ordering = ('sequence',)
 
 
 class QuestionAdmin(admin.ModelAdmin):

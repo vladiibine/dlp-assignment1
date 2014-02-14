@@ -1,0 +1,48 @@
+{#<h1>#}
+{#    the model that I sent, {{ vwh_model_value }}<br/>#}
+{#    the rest should be crap!:#}
+{#</h1>#}
+{##}
+{#{% if latest_poll_list %}#}
+{#    <ul>#}
+{#    {% for poll in latest_poll_list %}#}
+{#        <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>#}
+{#    {% endfor %}#}
+{#    </ul>#}
+{#{% else %}#}
+{#    <p>No polls are available.</p>#}
+{#{% endif %}#}
+
+<h1> Welcome to the awesomest testing site </h1>
+<h2> hold on... you're about to shit your self in your pantz</h2>
+<h3> ...i should really put the above stuff into a parent template or smth</h3>
+</br>
+</br>
+<table>
+    {% for question in questions %}
+        <tr>
+            <td> {{ question.text }}</td>
+            <td>
+                <form id="question{{ question.id }}">
+                {% for answer in question.answer_set.all %}
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="radio" name="question{{ question.id }}"/>
+                            </td>
+                            <td>
+                                {{ answer }}
+                            </td>
+                        </tr>
+                    </table>
+                {% endfor %}
+                </form>
+            </td>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<form action="submit">
+    <input type="button" value="submit answers">
+</form>

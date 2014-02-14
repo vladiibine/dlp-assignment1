@@ -20,7 +20,9 @@
 <table>
     {% for test in tests %}
         <tr>
-            <td>{{ test }}</td>
+            <td>
+                <a href="/tests/{{ test.id }}">{{ test }}</a>
+            </td>
         </tr>
     {% endfor %}
 </table>

@@ -25,17 +25,10 @@ class Page(models.Model):
     Pages are included in a test, in a sequential order
     """
     test = models.ForeignKey(Test)
-    sequence = models.IntegerField(null=True)
-
-    def get_name(self):
-        """Used for displaying the name of this entity
-
-        :return:
-        """
-        return "Page number {0:s}".format(self.sequence)
+    sequence = models.IntegerField()
 
     def __str__(self):
-        return u"Pagina {0:s}".format(self.get_name())
+        return u"Pagina {0:d}".format(self.sequence)
 
     def __unicode__(self):
         return str(self)

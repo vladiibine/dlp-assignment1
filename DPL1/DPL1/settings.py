@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -84,3 +85,7 @@ STATIC_URL = '/static/'
 
 #Vlad was here: custom settings introduced by me
 TEMPLATE_DIRS = ('templates')
+
+#Should reorder the domain objects on the admin site... the order needs to
+# be this:
+# ADMIN_REORDER = ( ('home', ('Test', 'Page', 'Question')))
