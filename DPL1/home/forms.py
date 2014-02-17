@@ -1,7 +1,7 @@
 from django import forms
 
 
-def create_form_for_page(questions):
+def create_form_for_questions(questions):
     """Creates a dynamic form instance, given the questions in a page
 
     :param questions: django.db.models.QuerySet of home.models.Question
@@ -9,6 +9,9 @@ def create_form_for_page(questions):
     """
     bases = (forms.Form,)
     attributes = {}
+    if questions.count() == 0:
+        attributes["submittable"] = False
+        return type("EmptyDynamicForm", bases, attributes)
     for question in questions.all():
         choices = []
         for answer in question.answer_set.all():
@@ -18,5 +21,6 @@ def create_form_for_page(questions):
                               choices=choices,
                               label=question.text)
         )
+    attributes['submittable'] = True
     form = type("DynamicPageForm", bases, attributes)
     return form()

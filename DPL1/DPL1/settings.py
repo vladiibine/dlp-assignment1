@@ -34,10 +34,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    # #sessions are stored in cookies. this setting implies
+    # DB storage of sessions - but we don't need it, since we keep it only
+    # in memory
+    # 'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home'
+    'home',
+    'south'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,3 +93,7 @@ TEMPLATE_DIRS = ('templates')
 #Should reorder the domain objects on the admin site... the order needs to
 # be this:
 # ADMIN_REORDER = ( ('home', ('Test', 'Page', 'Question')))
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+#This prevents changing the cookie data via Javascript
+SESSION_COOKIE_HTTPONLY = True

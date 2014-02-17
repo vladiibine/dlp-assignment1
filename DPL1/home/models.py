@@ -28,7 +28,7 @@ class Page(models.Model):
     sequence = models.IntegerField()
 
     def __str__(self):
-        return u"Pagina {0:d}".format(self.sequence)
+        return u"{0:s} - Page {1:d}".format(self.test, self.sequence)
 
     def __unicode__(self):
         return str(self)
@@ -42,9 +42,10 @@ class Question(models.Model):
     page = models.ForeignKey(Page)
     text = models.CharField(max_length=100)
     sequence = models.IntegerField(null=True)
+    multiple_answers = models.BooleanField(default=0)
 
     def __str__(self):
-        return u"{0:s}".format(self.text)
+        return u"{0:s} - Question : {1:s}".format(self.page, self.text)
 
 
 class Answer(models.Model):
@@ -56,6 +57,20 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     text = models.CharField(max_length=50)
     points = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0:s}".format(self.text)
+
+
+class Result(models.Model):
+    """Result for a Test.
+
+    Contains the description of the result of a test, for a point maximum.
+    """
+    test = models.ForeignKey(Test)
+    text = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    max_points = models.IntegerField(default=0, null=True, blank=True)
 
     def __unicode__(self):
         return u"{0:s}".format(self.text)

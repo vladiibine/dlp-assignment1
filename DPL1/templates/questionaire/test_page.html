@@ -4,8 +4,15 @@
 </br>
 </br>
 
-<form method="post" action="/tests/{{ test.id }}/{{ next_page_id }}">
+<form method="post" action="/tests/{{ test_id }}/{{ next_page_id }}">
+    {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Submit answers">
+    {% if form.submittable %}
+        <input type="submit" value="Submit answers">
+    {% else %}
+        It seems this test was not yet configured
+        (doesn't have any questions assigned).</br>
+        <a href="{{ parent_url }}">Go back</a>
+    {% endif %}
 </form>
 

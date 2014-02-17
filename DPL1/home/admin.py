@@ -17,19 +17,23 @@ class AnswerInline(admin.TabularInline):
     model = home.models.Answer
 
 
+class ResultInline(admin.TabularInline):
+    model = home.models.Result
+
+
 class TestAdmin(admin.ModelAdmin):
-    inlines = (PageInline,)
+    inlines = (PageInline, ResultInline)
     list_display = ('name', 'description')
-    # ordering = 1
 
 
 class PageAdmin(admin.ModelAdmin):
     inlines = (QuestionInline,)
-    ordering = ('sequence',)
+    ordering = ('test', 'sequence')
 
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = (AnswerInline,)
+    ordering = ('page', 'text')
 
 
 admin.site.register(home.models.Test, TestAdmin)
