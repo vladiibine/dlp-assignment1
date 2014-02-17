@@ -1,3 +1,4 @@
+import functools
 import itertools
 from django.core.urlresolvers import reverse
 
@@ -32,24 +33,44 @@ def error_view(request):
 def home_view(request):
     #instantiate the template in the dir given (project dir - cuz
     # of TEMPLATES_DIR ) name in the settings module of the project
-    template = loader.get_template('questionaire/index.html')
     #create the context for the view - just fill the list of crap here
     tests = Test.objects.all()
-    context = RequestContext(request, {'tests': tests})
-    # return django.http.HttpResponse(template.render(context))
+    request.session.get('answers', {}).clear()
+    request.session.save()
 
-    #do the above, quicker
     return render(request, 'questionaire/index.html', {'tests': tests})
 
 
+def update_session(func):
+    """Updates the session with the answers from the form on the last page.
+    """
+
+    @functools.wraps(func)
+    def wrapper(request, *args, **kwargs):
+        session = request.session
+        post_dict = request.POST
+        form_dict = {key: post_dict.getlist(key) for key in post_dict if
+                     'question' in key}
+        answers = session.get('answers', {})
+        answers.update(form_dict)
+        session['answers'] = answers
+        session.save()
+        return func(request, *args, **kwargs)
+
+    return wrapper
+
+
+@update_session
 def show_result_view(request, test_id):
     """Shows the results page for the corresponding test_id """
     #1 calculate the result for the given test ID
     session = request.session
-    answer_lists = (session[question] for question in session.keys() if
-                    'question' in question)
+    answers = session.get('answers', {})
+    answer_lists = [answers[question] for question in
+                    answers.keys() if 'question' in question]
     answer_ids = itertools.chain(*answer_lists)
-    answers = Answer.objects.filter(id__in=answer_ids)
+    answer_ids_list = list(answer_ids)
+    answers = Answer.objects.filter(id__in=answer_ids_list)
     total_points = 0
     for answer in answers:
         total_points += answer.points
@@ -67,25 +88,17 @@ def show_result_view(request, test_id):
     return render(request, 'questionaire/results.html', context)
 
 
-# @csrf_protect
-def update_session(session, post_dict):
-    """Updates the session with the answers from the form on the last page.
-    """
-    form_dict = {key: post_dict.getlist(key) for key in post_dict if
-                 'question' in key}
-    session.update(form_dict)
-
-
+@update_session
 def pages_view(request, test_id, page_id=1):
+    """Handles the logic for the test pages view:
+        "questionaire/test_page.html"
+    """
     #Determine next page: either normal page, or results page
     next_pages = Page.objects.filter(id__gt=page_id)
     if next_pages.count() > 0 and next_pages[0].question_set.count() > 0:
         next_page_id = next_pages[0].id
     else:
         next_page_id = 0
-
-    if int(page_id) > 1:
-        update_session(request.session, request.POST)
 
     questions = Question.objects.filter(page__test_id=test_id,
                                         page_id=page_id)

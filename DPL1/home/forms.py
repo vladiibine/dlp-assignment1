@@ -16,8 +16,12 @@ def create_form_for_questions(questions):
         choices = []
         for answer in question.answer_set.all():
             choices.append((answer.id, answer.text))
+        if question.multiple_answers is True:
+            widget = forms.CheckboxSelectMultiple
+        else:
+            widget = forms.RadioSelect
         attributes["question_%i" % question.id] = (
-            forms.ChoiceField(widget=forms.CheckboxSelectMultiple,
+            forms.ChoiceField(widget=widget,
                               choices=choices,
                               label=question.text)
         )
