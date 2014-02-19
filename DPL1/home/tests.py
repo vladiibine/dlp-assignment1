@@ -13,27 +13,16 @@ from django.test import Client
 from home.models import Test, Page, Question, Answer, Result
 
 ANSWER_3 = "answer3"
-
 ANSWER_2 = "answer2"
-
 ANSWER_1 = "answer1"
-
 Q_ARE_YOU_SURE = "are you sure?"
-
 TEST_NAME = "test 1"
-
 TEST_DESCRIPTION = "test 1 lol"
-
 VERY_GOOD = "very good!"
-
 NO_DESCRIPTION_3 = "no description - 3"
-
 BAD = "bad!"
-
 NO_DESCRIPTION_2 = "no description - 2"
-
 NO_DESCRIPTION_1 = "no description - 1"
-
 ALMOST_GOOD = "almost good!"
 
 
@@ -68,12 +57,16 @@ class TestAbstract(TestCase):
 
 
 class HomeTest(TestAbstract):
+    def _get_response(self):
+        client = Client()
+        response = client.get(reverse('home'))
+        return response
+
     def test_home_empty(self):
         """Check if home page works empty
         """
         Test.objects.all().delete()
-        client = Client()
-        response = client.get(reverse('home'))
+        response = self._get_response()
         self.assertEqual(200, response.status_code)
         self.assertTrue(
             'Welcome to the awesomest testing site' in response.content)
@@ -81,7 +74,9 @@ class HomeTest(TestAbstract):
     def test_home_not_empty(self):
         """Check if home page works with a few tests available
         """
-        pass
+        # response = self._ge
+        response = self._get_response()
+        self.assertTrue(TEST_NAME in response.content)
 
 
 class ResultTest(TestAbstract):
@@ -104,4 +99,5 @@ class ResultTest(TestAbstract):
         self.assertTrue(ANSWER_2 in response.content)
         self.assertTrue(ANSWER_3 in response.content)
 
-
+    def test_result_very_good(self):
+        pass
