@@ -4,7 +4,7 @@ import functools
 
 from django.http import HttpResponseRedirect
 
-from home.models import Page
+from home.models import Page, Test
 from home.session_util import TestSession
 
 
@@ -15,6 +15,7 @@ def disable_navigation(func):
     :return:
     """
 
+    @functools.wraps(func)
     def wrapper(request, *args, **kwargs):
         """Redirects to current page
 
@@ -37,19 +38,20 @@ def is_page_sequence_valid(request, test_id, page_id, referer):
 
     :param referer:
     """
-    # test_session = request.session.get('test_session', None)
     test_session = TestSession(request.session)
     if test_session is None:
         raise KeyError('Unable to determine page sequence')
 
     last_test_id, last_page_id = test_session.get_last_test_page()
-    if last_page_id is None and last_page_id is None:
-        return page_id == 1
+    #check if first page is right
+    if last_page_id is None:
+        return int(page_id) == Test.get_first_page_for(test_id)
 
-    if last_test_id != test_id:
-        return False
+    #check if next page is right (next or results page)
     if page_id != get_next_page(last_test_id, last_page_id):
         return False
+
+    return True
 
 
 def get_last_rel_url(request):
@@ -101,7 +103,11 @@ def validate_navigation(func):
         if 0 == 0:
             pass
 
-        #todo allow access from the home page to any /tests/x/<get_first_page>
+        #todo allow access from the home page to any
+        # /tests/x/<get_first_page_for>
+
+        #finally
+        return func(request, *args, **kwargs)
 
     return wrapper
 
@@ -141,9 +147,7 @@ def save_answers(func):
         page_id = kwargs.get('page_id', None)
         test_session = TestSession(request.session)
         test_session.test_id = test_id
-        test_session.update_results(request.POST, page_id)
+        test_session.update_results(request.POST, test_id, page_id)
         return func(request, *args, **kwargs)
 
     return wrapper
-
-

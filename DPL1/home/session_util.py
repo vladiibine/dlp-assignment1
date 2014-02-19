@@ -10,12 +10,12 @@ class TestSession(object):
         """
         #todo - efectiv n-am nevoie de dict, ci de o lista de raspunsuri.
         self.answers = session.get('answers', {})
-        self.page_id = 1
+        self.test_id = session.get('test_id', None)
+        self.page_id = session.get('page_id', None)
         self.last_page_id = self.last_test_id = None
         self.session = session
-        self.test_id = -1
 
-    def update_results(self, post_dict, page_id):
+    def update_results(self, post_dict, test_id, page_id):
         """Update the answers list from the POST object of the request
 
         :param post_dict: the request.POST which contains the form data
@@ -25,6 +25,9 @@ class TestSession(object):
                      'question' in key}
         self.answers.update(form_dict)
         self.last_page_id = self.page_id
+        self.test_id = test_id
+        self.session['test_id'] = test_id
+        self.session['page_id'] = page_id
         self.page_id = page_id
         self.save_to_session()
 
@@ -43,7 +46,7 @@ class TestSession(object):
 
         test_results = Result.objects.filter(
             max_points__lte=total_points, test__id=test_id).order_by(
-                '-max_points')
+            '-max_points')
         #2 compare with test results
         if test_results.count() > 0:
             return test_results[0]

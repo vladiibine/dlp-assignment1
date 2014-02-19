@@ -18,6 +18,26 @@ class Test(models.Model):
     def __unicode__(self):
         return str(self)
 
+    @classmethod
+    def get_first_page_for(cls, test_id):
+        """Return the first page for test, or None
+
+        :param test_id: the id of the home.models.Test
+        """
+        test = cls.objects.filter(id=test_id)
+        if test.count() < 1:
+            return
+
+        for page in test.get().page_set.all():
+            if page.question_set.count() > 0:
+                return page.id
+
+    def first_page(self):
+        """returns the first page for the current test
+        :return:
+        """
+        return self.__class__.get_first_page_for(self.id)
+
 
 class Page(models.Model):
     """Model for the Page.

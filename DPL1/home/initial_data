@@ -1,0 +1,637 @@
+[
+{
+    "pk": 1, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "logentry", 
+        "name": "log entry", 
+        "app_label": "admin"
+    }
+},
+{
+    "pk": 2, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "permission", 
+        "name": "permission", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 3, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "group", 
+        "name": "group", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 4, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "user", 
+        "name": "user", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 5, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "contenttype", 
+        "name": "content type", 
+        "app_label": "contenttypes"
+    }
+},
+{
+    "pk": 6, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "session", 
+        "name": "session", 
+        "app_label": "sessions"
+    }
+},
+{
+    "pk": 7, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "test", 
+        "name": "test", 
+        "app_label": "home"
+    }
+},
+{
+    "pk": 8, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "page", 
+        "name": "page", 
+        "app_label": "home"
+    }
+},
+{
+    "pk": 9, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "question", 
+        "name": "question", 
+        "app_label": "home"
+    }
+},
+{
+    "pk": 10, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "answer", 
+        "name": "answer", 
+        "app_label": "home"
+    }
+},
+{
+    "pk": 11, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "result", 
+        "name": "result", 
+        "app_label": "home"
+    }
+},
+{
+    "pk": 12, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "migrationhistory", 
+        "name": "migration history", 
+        "app_label": "south"
+    }
+},
+{
+    "pk": 1, 
+    "model": "home.test", 
+    "fields": {
+        "name": "test pentru pureci", 
+        "description": "testeaza de pureci"
+    }
+},
+{
+    "pk": 1, 
+    "model": "home.page", 
+    "fields": {
+        "test": 1, 
+        "sequence": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "home.page", 
+    "fields": {
+        "test": 1, 
+        "sequence": 2
+    }
+},
+{
+    "pk": 3, 
+    "model": "home.page", 
+    "fields": {
+        "test": 1, 
+        "sequence": 3
+    }
+},
+{
+    "pk": 1, 
+    "model": "home.question", 
+    "fields": {
+        "multiple_answers": true, 
+        "text": "Cat e ceasu", 
+        "page": 1, 
+        "sequence": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "home.question", 
+    "fields": {
+        "multiple_answers": false, 
+        "text": "Unde sta bunicu?", 
+        "page": 1, 
+        "sequence": 2
+    }
+},
+{
+    "pk": 3, 
+    "model": "home.question", 
+    "fields": {
+        "multiple_answers": false, 
+        "text": "Ai o tzigara?", 
+        "page": 1, 
+        "sequence": 3
+    }
+},
+{
+    "pk": 1, 
+    "model": "home.answer", 
+    "fields": {
+        "text": "1+2=?", 
+        "points": 5, 
+        "question": 3
+    }
+},
+{
+    "pk": 2, 
+    "model": "home.answer", 
+    "fields": {
+        "text": "asd + qwer = ?", 
+        "points": 10, 
+        "question": 3
+    }
+},
+{
+    "pk": 1, 
+    "model": "home.result", 
+    "fields": {
+        "test": 1, 
+        "text": "Ai pureci", 
+        "max_points": 9999, 
+        "description": "deci da"
+    }
+},
+{
+    "pk": 2, 
+    "model": "home.result", 
+    "fields": {
+        "test": 1, 
+        "text": "S-ar putea sa ai pureci", 
+        "max_points": 100, 
+        "description": "nu stim sigur"
+    }
+},
+{
+    "pk": 3, 
+    "model": "home.result", 
+    "fields": {
+        "test": 1, 
+        "text": "Nu credem ca ai pureci", 
+        "max_points": 10, 
+        "description": "Ekipa noastra e destul de sigura ca nu ai pureci, dar trebuie sa reverifici"
+    }
+},
+{
+    "pk": 4, 
+    "model": "home.result", 
+    "fields": {
+        "test": 1, 
+        "text": "Sigur n-ai pureci", 
+        "max_points": 5, 
+        "description": "N-ai"
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_logentry", 
+        "name": "Can add log entry", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_logentry", 
+        "name": "Can change log entry", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_logentry", 
+        "name": "Can delete log entry", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_permission", 
+        "name": "Can add permission", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_permission", 
+        "name": "Can change permission", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_permission", 
+        "name": "Can delete permission", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 7, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_group", 
+        "name": "Can add group", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_group", 
+        "name": "Can change group", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 9, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_group", 
+        "name": "Can delete group", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 10, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_user", 
+        "name": "Can add user", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 11, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_user", 
+        "name": "Can change user", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 12, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_user", 
+        "name": "Can delete user", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 13, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_contenttype", 
+        "name": "Can add content type", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 14, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_contenttype", 
+        "name": "Can change content type", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 15, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_contenttype", 
+        "name": "Can delete content type", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 16, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_session", 
+        "name": "Can add session", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 17, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_session", 
+        "name": "Can change session", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 18, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_session", 
+        "name": "Can delete session", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 19, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_test", 
+        "name": "Can add test", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 20, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_test", 
+        "name": "Can change test", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 21, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_test", 
+        "name": "Can delete test", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 22, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_page", 
+        "name": "Can add page", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 23, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_page", 
+        "name": "Can change page", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 24, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_page", 
+        "name": "Can delete page", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 25, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_question", 
+        "name": "Can add question", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 26, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_question", 
+        "name": "Can change question", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 27, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_question", 
+        "name": "Can delete question", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 28, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_answer", 
+        "name": "Can add answer", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 29, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_answer", 
+        "name": "Can change answer", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 30, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_answer", 
+        "name": "Can delete answer", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 31, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_result", 
+        "name": "Can add result", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 32, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_result", 
+        "name": "Can change result", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 33, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_result", 
+        "name": "Can delete result", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 34, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_migrationhistory", 
+        "name": "Can add migration history", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 35, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_migrationhistory", 
+        "name": "Can change migration history", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 36, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_migrationhistory", 
+        "name": "Can delete migration history", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "vardelean", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-02-19T13:25:26.688Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$x09nh4s5j9KL$HToKLq7J19IM7asx20spE6uZjC2crc60zsbBlan5xxM=", 
+        "email": "", 
+        "date_joined": "2014-02-19T09:53:34.149Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2014-02-19T12:08:30.390Z", 
+        "object_repr": "test pentru pureci", 
+        "object_id": "1", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 7
+    }
+},
+{
+    "pk": 2, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2014-02-19T12:09:57.805Z", 
+        "object_repr": "test pentru pureci - Page 1", 
+        "object_id": "1", 
+        "change_message": "Added question \"test pentru pureci - Page 1 - Question : Cat e ceasu\". Added question \"test pentru pureci - Page 1 - Question : Unde sta bunicu?\". Added question \"test pentru pureci - Page 1 - Question : Ai o tzigara?\".", 
+        "user": 1, 
+        "content_type": 8
+    }
+},
+{
+    "pk": 3, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2014-02-19T12:10:52.952Z", 
+        "object_repr": "test pentru pureci - Page 1 - Question : Ai o tzigara?", 
+        "object_id": "3", 
+        "change_message": "Added answer \"1+2=?\". Added answer \"asd + qwer = ?\".", 
+        "user": 1, 
+        "content_type": 9
+    }
+},
+{
+    "pk": 4, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2014-02-19T13:11:49.928Z", 
+        "object_repr": "test pentru pureci - Page 1 - Question : Ai o tzigara?", 
+        "object_id": "3", 
+        "change_message": "Changed multiple_answers.", 
+        "user": 1, 
+        "content_type": 9
+    }
+},
+{
+    "pk": 5, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2014-02-19T13:25:32.706Z", 
+        "object_repr": "test pentru pureci", 
+        "object_id": "1", 
+        "change_message": "Changed max_points for result \"Nu credem ca ai pureci\".", 
+        "user": 1, 
+        "content_type": 7
+    }
+}
+]
