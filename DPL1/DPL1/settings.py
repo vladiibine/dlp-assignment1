@@ -36,8 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     # #sessions are stored in cookies. this setting implies
     # DB storage of sessions - but we don't need it, since we keep it only
-    # in memory
-    # 'django.contrib.sessions',
+    # in memory - or we DO need it
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
@@ -45,6 +45,8 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    #Could use my custom class here - and SHOULD if i want to create custom
+    #..sessions
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -93,7 +95,12 @@ TEMPLATE_DIRS = ('templates')
 #Should reorder the domain objects on the admin site... the order needs to
 # be this:
 # ADMIN_REORDER = ( ('home', ('Test', 'Page', 'Question')))
+#Should use this module to store my session classes, to instantiate inside the
+#..custom middleware class
+##Cache only session cookies
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+# SESSION_ENGINE = ''
 
 #This prevents changing the cookie data via Javascript
 SESSION_COOKIE_HTTPONLY = True
+# SESSION_ENGINE = 'home.session_util'

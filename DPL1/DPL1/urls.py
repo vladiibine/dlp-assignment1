@@ -1,10 +1,9 @@
 from django.conf.urls import patterns, include, url
-
 from django.contrib import admin
 
-admin.autodiscover()
-
 from home import views
+
+admin.autodiscover()
 
 urlpatterns = patterns('',
                        # Examples:
