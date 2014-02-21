@@ -32,6 +32,22 @@ class Test(models.Model):
             if page.question_set.count() > 0:
                 return page.id
 
+    @classmethod
+    def get_next_page_for(cls, test_id, page_id):
+        """Returns the next page with questions for the given test and page IDs
+
+        If no such page, return 0 - the test result page
+
+        :param test_id:
+        :param page_id:
+        :return the ID of the next page
+        """
+        pages = Page.get_for_test(test_id, page_id)
+        for page in pages.all():
+            if Answer.count_for_page(page.id) > 0:
+                return page.id
+        return 0
+
     def first_page(self):
         """returns the first page for the current test
         :return:
@@ -52,6 +68,20 @@ class Page(models.Model):
 
     def __unicode__(self):
         return str(self)
+
+    @classmethod
+    def get_for_test(cls, test_id, page_id=None):
+        """Returns all the pages for the given test (greater than gt_page_id)
+
+        :param test_id: id of the test
+        :param page_id: with sequence greater than that of this Page
+        """
+        kwargs = {'test__id': test_id}
+        if page_id is not None:
+            sequence = cls.objects.get(id=page_id).sequence
+            kwargs['sequence__gt'] = sequence
+
+        return Page.objects.filter(**kwargs)
 
 
 class Question(models.Model):
@@ -80,6 +110,14 @@ class Answer(models.Model):
 
     def __unicode__(self):
         return u"{0:s}".format(self.text)
+
+    @classmethod
+    def count_for_page(cls, page_id):
+        """Returns the number of answers for a given page
+
+        :param page_id:
+        """
+        return cls.objects.filter(question__page__id=page_id).count()
 
 
 class Result(models.Model):

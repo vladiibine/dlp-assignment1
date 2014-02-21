@@ -8,7 +8,7 @@ class TestSession(object):
     def __init__(self, session):
         """Initializes the answers list
         """
-        #todo - efectiv n-am nevoie de dict, ci de o lista de raspunsuri.
+        #todo :WISH:- efectiv n-am nevoie de dict, ci de o lista de raspunsuri.
         self.answers = session.get('answers', {})
         self.test_id = session.get('test_id', None)
         self.page_id = session.get('page_id', None)
@@ -24,7 +24,7 @@ class TestSession(object):
         form_dict = {key: post_dict.getlist(key) for key in post_dict if
                      'question' in key}
         self.answers.update(form_dict)
-        self.last_page_id = self.page_id
+        self.session['last_page_id'] = self.page_id
         self.test_id = test_id
         self.session['test_id'] = test_id
         self.session['page_id'] = page_id
@@ -56,7 +56,7 @@ class TestSession(object):
     def get_last_test_page(self):
         """Return the last test page that the user submitted.
         """
-        return self.test_id, self.last_page_id
+        return self.session['test_id'], self.session['last_page_id']
 
     def save_to_session(self):
         """Save the currently managed test data to the user session.

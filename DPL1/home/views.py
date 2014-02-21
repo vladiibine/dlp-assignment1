@@ -1,6 +1,7 @@
 """Define the views used in the application `home`
 """
 from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 import django.http
 
@@ -89,10 +90,23 @@ def pages_view(request, test_id, page_id=1):
     #Determine next page: either normal page, or results page
     next_page_id = get_next_page(test_id, page_id)
 
-    questions = Question.objects.filter(page__test_id=test_id,
-                                        page_id=page_id)
-    form = create_form_for_questions(questions)
-    context = {'test_id': test_id, 'next_page_id': next_page_id, 'form': form}
+    if request.method == 'POST':
+        old_questions = Question.objects.filter(page__test_id=test_id,
+                                                page_id=page_id)
+        form = create_form_for_questions(old_questions)(request.POST)
+
+        if form.is_valid():
+            redirect_to = reverse('pages', kwargs={'test_id': test_id,
+                                                   'page_id': next_page_id})
+            return HttpResponseRedirect(redirect_to)
+        else:
+            pass
+    else:
+        questions = Question.objects.filter(page__test_id=test_id,
+                                            page_id=page_id)
+        form = create_form_for_questions(questions)()
+
+    context = {'test_id': test_id, 'page_id': page_id, 'form': form}
     if form.submittable is False:
         context['parent_url'] = request.META.get('HTTP_REFERER')
 

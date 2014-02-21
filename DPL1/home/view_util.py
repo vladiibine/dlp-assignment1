@@ -1,6 +1,7 @@
 """Functions and decorators used by the views (`home.views`)
 """
 import functools
+from django.core.urlresolvers import reverse
 
 from django.http import HttpResponseRedirect
 
@@ -47,8 +48,11 @@ def is_page_sequence_valid(request, test_id, page_id, referer):
     if last_page_id is None:
         return int(page_id) == Test.get_first_page_for(test_id)
 
+    if last_page_id == page_id:
+        return True
+
     #check if next page is right (next or results page)
-    if page_id != get_next_page(last_test_id, last_page_id):
+    if int(page_id) != get_next_page(last_test_id, last_page_id):
         return False
 
     return True
@@ -78,14 +82,17 @@ def validate_navigation(func):
     :param func:
     :return:
     """
-
     @functools.wraps(func)
     def wrapper(request, *args, **kwargs):
         """
-        :param kwargs:
-        :param args:
-        :param request:
-        """
+                :param kwargs:
+                :param args:
+                :param request:
+                """
+        # if current path is the 'home' path, allow navigation
+        if request.path == reverse('home'):
+            return func(request, *args, **kwargs)
+
         #check if the current page is a valid successor for the test pages
         referer = get_last_rel_url(request)
 
@@ -99,14 +106,6 @@ def validate_navigation(func):
             else:
                 return render_last_page(request)
 
-        #todo: check if the form was validated
-        if 0 == 0:
-            pass
-
-        #todo allow access from the home page to any
-        # /tests/x/<get_first_page_for>
-
-        #finally
         return func(request, *args, **kwargs)
 
     return wrapper
@@ -120,13 +119,14 @@ def get_next_page(test_id, page_id):
     :param page_id: id of the home.models.Page
     :param test_id: if of the home.models.Test
     """
-    next_pages = Page.objects.filter(id__gt=page_id, test__id=test_id)
-
-    for page in next_pages:
-        if page.question_set.count() > 0:
-            return page.id
-    else:
-        return 0
+    return Test.get_next_page_for(test_id, page_id)
+    # next_pages = Page.objects.filter(id__gt=page_id, test__id=test_id)
+    #
+    # for page in next_pages:
+    #     if page.question_set.count() > 0:
+    #         return page.id
+    # else:
+    #     return 0
 
 
 def save_answers(func):

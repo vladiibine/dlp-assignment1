@@ -4,7 +4,7 @@
 </br>
 </br>
 
-<form method="post" action="/tests/{{ test_id }}/{{ next_page_id }}">
+<form method="post" action="/tests/{{ test_id }}/{{ page_id }}">
     {% csrf_token %}
     {{ form.as_p }}
     {% if form.submittable %}
