@@ -30,20 +30,21 @@ def disable_navigation(func):
     return wrapper
 
 
-def is_page_sequence_valid(request, test_id, page_id, referer):
+def is_page_sequence_valid(test_id, page_id, last_test_id, last_page_id):
     """Checks whether the current test page is in the right sequence with
     regards to the last.
 
     Given the current test_id and page_id, this function checks the
     HTTP_REFERER (last page) to see if
 
+    :param last_test_id:
     :param referer:
     """
-    test_session = TestSession(request.session)
-    if test_session is None:
-        raise KeyError('Unable to determine page sequence')
+    # test_session = TestSession(request.session)
+    # if test_session is None:
+    #     raise KeyError('Unable to determine page sequence')
 
-    last_test_id, last_page_id = test_session.get_last_test_page()
+    # last_test_id, last_page_id = test_session.get_last_test_page()
     #check if first page is right
     if last_page_id is None:
         return int(page_id) == Test.get_first_page_for(test_id)
@@ -71,9 +72,23 @@ def render_last_page(request):
     :param request:
     """
     referer_url = request.META.get('HTTP_REFERER')
+    if not referer_url:
+        raise UrlModifiedError()
     response = HttpResponseRedirect(referer_url)
 
     return response
+
+
+def render_default_page(request):
+    """ When possible returns the last page, or the home page
+
+    :param request: a HttpRequest object
+    """
+    try:
+        default_page = render_last_page(request)
+    except UrlModifiedError:
+        default_page = HttpResponseRedirect(reverse('home'))
+    return default_page
 
 
 def validate_navigation(func):
@@ -82,6 +97,7 @@ def validate_navigation(func):
     :param func:
     :return:
     """
+
     @functools.wraps(func)
     def wrapper(request, *args, **kwargs):
         """
@@ -94,19 +110,21 @@ def validate_navigation(func):
             return func(request, *args, **kwargs)
 
         #check if the current page is a valid successor for the test pages
-        referer = get_last_rel_url(request)
 
         test_id = kwargs.get('test_id', None)
         page_id = kwargs.get('page_id', None)
+        test_session = TestSession(request.session)
+        last_test_id, last_page_id = test_session.get_last_test_page()
 
-        if not (test_id is None or page_id is None):
-            if is_page_sequence_valid(request, test_id, page_id, referer):
+        if test_id is not None and page_id is not None:
+            if is_page_sequence_valid(test_id, page_id, last_test_id,
+                                      last_page_id):
                 result = func(request, *args, **kwargs)
                 return result
             else:
-                return render_last_page(request)
-
-        return func(request, *args, **kwargs)
+                return render_default_page(request)
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
     return wrapper
 
@@ -151,3 +169,25 @@ def save_answers(func):
         return func(request, *args, **kwargs)
 
     return wrapper
+
+
+def validate_results(func):
+    """Either allow displaying of the results page, or return to the default
+        page
+    """
+    @functools.wraps(func)
+    def wrapper(request, *args, **kwargs):
+        """Decorator func wrapper
+        """
+        test_session = TestSession(request.session)
+        if test_session.can_display_results():
+            return func(request, *args, **kwargs)
+        else:
+            return render_default_page(request)
+    return wrapper
+
+
+class UrlModifiedError(Exception):
+    """Thrown if the user executed an arbitrary URL
+    """
+    pass
