@@ -1,5 +1,7 @@
+"""Wrapper around the test session
+"""
 import itertools
-from home.models import Answer, Result
+from home.models import Answer, Result, Test, Question
 
 
 class TestSession(object):
@@ -19,6 +21,7 @@ class TestSession(object):
         """Update the answers list from the POST object of the request
 
         :param post_dict: the request.POST which contains the form data
+        :param test_id: id of the home.models.Test
         :param page_id: the id of the home.models.Page
         """
         form_dict = {key: post_dict.getlist(key) for key in post_dict if
@@ -46,7 +49,7 @@ class TestSession(object):
 
         test_results = Result.objects.filter(
             max_points__lte=total_points, test__id=test_id).order_by(
-            '-max_points')
+                '-max_points')
         #2 compare with test results
         if test_results.count() > 0:
             return test_results[0]
@@ -68,3 +71,24 @@ class TestSession(object):
         """Clears the answers of the previous user session."""
         self.session.clear()
         self.session.save()
+
+    def can_display_results(self):
+        """Returns True if the last test page was submitted
+        :return:
+        """
+        #todo Just check if all the questions with answers were answered
+        #get all questions with answers - check if every"question_ID" is
+        # contained in the answers list
+        answerable_questions = Question.get_answerable_questions()
+
+        for question in answerable_questions:
+            if question.as_form_id() not in self.answers.keys():
+                return False
+        return True
+
+        # last_test_id, last_page_id = self.get_last_test_page()
+        # last_test_page = Test.get_last_page_for(last_test_id)
+        # if last_page_id is not None:
+        #     return last_page_id == last_test_page
+        # else:
+        #     return int(self.session.get('test_id',None)) == last_test_page

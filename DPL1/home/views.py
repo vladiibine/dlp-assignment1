@@ -9,7 +9,8 @@ from home.forms import create_form_for_questions
 from home.models import Test, Answer, Result, Question
 # from home.session_util import TestSession
 from home.session_util import TestSession
-from home.view_util import get_next_page, save_answers, validate_navigation
+from home.view_util import get_next_page, save_answers, validate_navigation, \
+    validate_results
 
 
 class TestCioban(object):
@@ -60,8 +61,7 @@ def home_view(request):
     return result
 
 
-@save_answers
-@validate_navigation
+@validate_results
 def show_result_view(request, test_id):
     """Shows the results page for the corresponding test_id
     :param test_id: id of the home.models.Test
@@ -96,11 +96,13 @@ def pages_view(request, test_id, page_id=1):
         form = create_form_for_questions(old_questions)(request.POST)
 
         if form.is_valid():
-            redirect_to = reverse('pages', kwargs={'test_id': test_id,
-                                                   'page_id': next_page_id})
+            if int(page_id) == Test.get_last_page_for(test_id):
+                redirect_to = reverse('results', kwargs={'test_id': test_id})
+            else:
+                redirect_to = reverse('pages', kwargs={'test_id': test_id,
+                                                       'page_id':
+                                                           next_page_id})
             return HttpResponseRedirect(redirect_to)
-        else:
-            pass
     else:
         questions = Question.objects.filter(page__test_id=test_id,
                                             page_id=page_id)

@@ -27,6 +27,13 @@ ALMOST_GOOD = "almost good!"
 
 class TestAbstract(TestCase):
     def setUp(self):
+        """
+        Test 1  >   Page 1  >   Question 1  >   Answer 1, 2, 3
+                >   Page 2  >
+                >   Page 3  >   Question 2
+                >   Page 4  >   Question 3  >   Answer 4, 5, 6
+                >   Page 5  >   Question 4  >   Answer 7, 8, 9
+        """
         self.test1 = Test.objects.create(name=TEST_1_NAME,
                                          description=TEST_1_DESCRIPTION)
         self.t1_result1 = Result.objects.create(test=self.test1,
@@ -86,11 +93,16 @@ class TestAbstract(TestCase):
                                                  text=ANSWER_1, points=4)
         self.t1_p5_q1_a2 = Answer.objects.create(question=self.t1_p5_q1,
                                                  text=ANSWER_2, points=90)
+        self.client = Client()
 
     def _get_response(self, view_name='pages', **kwargs):
-        client = Client()
         path = reverse(view_name, kwargs=kwargs)
-        response = client.get(path)
+        response = self.client.get(path)
+        return response
+
+    def _post_response(self, view_name='pages', *args, **kwargs):
+        path = reverse(view_name, kwargs=kwargs, *args)
+        response = self.client.post(path)
         return response
 
 
@@ -130,7 +142,74 @@ class PagesTest(TestAbstract):
         self.assertTrue(ANSWER_3 in response.content)
 
     def test_invalid_first_page(self):
-        response = self._get_response(test_id=self.test1.id,
-                                      page_id=self.t1_page2.id)
-        # self.assertTrue(response.request['PATH_INFO'] == reverse('home'))
+        path = reverse('pages', kwargs={'test_id': self.test1.id,
+                                        'page_id': self.t1_page2.id})
+        #follow = True mi-o aratat DAN... ca sa followeasca redirecturile
+        response = self.client.get(path, follow=True)
         self.assertEqual(response.request['PATH_INFO'], reverse('home'))
+
+
+class ResultsTest(TestAbstract):
+    def test_empty_response_page(self):
+        path = reverse('results', kwargs={'test_id': self.test1.id})
+        response = self.client.get(path, follow=True)
+        self.assertEqual(200, response.status_code)
+
+    def test_err_msg_response(self):
+        path = reverse('results', kwargs={'test_id': self.test1.id})
+        response = self.client.get(path, follow=True)
+        self.assertRedirects(response, reverse('home'))
+
+
+class NavigationValidationTest(TestAbstract):
+    """Tests for the navigation validator `home.view_util.validate_navigation`
+    """
+
+    def test_navigation_to_first_page_simple(self):
+        """Navigate to first page (by coincidence page 1)
+        """
+        first_page_id = Test.get_first_page_for(self.test1.id)
+        response = self._get_response(test_id=self.test1.id,
+                                      page_id=first_page_id)
+        self.assertEqual(200, response.status_code)
+
+    def test_navigate_to_first_page_complex(self):
+        """Navigate to the first page, even if this doesn't have sequence 1
+        """
+        page_1_id = Test.get_first_page_for(self.test1.id)
+        self.test1.page_set.first().delete()
+
+        first_page_id = Test.get_first_page_for(self.test1.id)
+        self.assertNotEqual(page_1_id, first_page_id)
+        response = self._get_response(test_id=self.test1.id,
+                                      page_id=first_page_id)
+        self.assertEqual(200, response.status_code)
+
+
+class TestWorkflow(TestAbstract):
+    def test_get_to_next_page(self):
+        first_page_path = reverse('pages',
+                                  kwargs={'test_id': self.test1.id,
+                                          'page_id': self.t1_page1.id})
+
+        first_page_answers = {'question_1': '3'}
+        response = self.client.post(first_page_path,
+                                    first_page_answers, follow=True)
+        next_page_id = Test.get_next_page_for(self.test1.id, self.t1_page1.id)
+        next_page_path = reverse('pages', kwargs={'test_id': self.test1.id,
+                                                  'page_id': next_page_id})
+        self.assertRedirects(response, next_page_path)
+
+    def test_complete_test_200(self):
+        final_page_path = reverse('pages', kwargs={'test_id': self.test1.id,
+                                                   'page_id': self.t1_p5.id})
+        final_page_answers = {'question_1': '1', 'question_3': '4',
+                              'question_4': '7', 'test_id': self.test1.id,
+                              'page_id': self.t1_p5.id}
+        self.client.session['answers'] = {'question_1': '1', 'question_3': '4',
+                                          'question_4': '7'}
+        response = self.client.post(final_page_path, final_page_answers,
+                                    follow=True)
+        results_url = reverse('results', kwargs={'test_id': self.test1.id})
+        #todo: this test can only pass if i modify the user session too...?
+        self.assertRedirects(response, results_url)

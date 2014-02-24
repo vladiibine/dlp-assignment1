@@ -3,6 +3,9 @@ from django.core.exceptions import ValidationError
 
 
 class CustomForm(forms.Form):
+    """Validates the entire page
+    """
+
     def clean(self):
         """Checks if an answer was given to all the questions on the page
 
@@ -39,7 +42,7 @@ def create_form_for_questions(questions):
         else:
             widget = forms.RadioSelect
             form_type = forms.ChoiceField
-        attributes["question_%i" % question.id] = (
+        attributes[question.as_form_id()] = (
             form_type(widget=widget,
                       choices=choices,
                       label=question.text)

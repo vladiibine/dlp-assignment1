@@ -46,7 +46,20 @@ class Test(models.Model):
         for page in pages.all():
             if Answer.count_for_page(page.id) > 0:
                 return page.id
-        return 0
+        return u'results'
+
+    @classmethod
+    def get_last_page_for(cls, test_id):
+        """Returns the ID of the last page for the given test_id
+
+        :param test_id:
+        """
+        ordered_pages = Test.objects.get(id=test_id).page_set.order_by(
+            '-sequence')
+        for page in ordered_pages:
+            if page.has_answers():
+                return page.id
+        raise InvalidTest()
 
     def first_page(self):
         """returns the first page for the current test
@@ -83,6 +96,14 @@ class Page(models.Model):
 
         return Page.objects.filter(**kwargs)
 
+    def has_answers(self):
+        """Returns True if the current page has any questions with any answers
+        """
+        for question in self.question_set.all():
+            if question.answer_set.count() > 0:
+                return True
+        return False
+
 
 class Question(models.Model):
     """Model for the Question.
@@ -96,6 +117,20 @@ class Question(models.Model):
 
     def __str__(self):
         return u"{0:s} - Question : {1:s}".format(self.page, self.text)
+
+    @classmethod
+    def get_answerable_questions(cls):
+        """Return all the questions that have at least 1 answer
+        """
+        answerable_questions = set()
+        for answer in Answer.objects.all():
+            answerable_questions.add(answer.question)
+        return answerable_questions
+
+    def as_form_id(self):
+        """Return the id to be used in the HTML forms
+        """
+        return u'question_%i' % self.id
 
 
 class Answer(models.Model):
@@ -132,3 +167,11 @@ class Result(models.Model):
 
     def __unicode__(self):
         return u"{0:s}".format(self.text)
+
+
+class InvalidTest(Exception):
+    """Raised when an invalid test is being processed.
+
+    Invalid might mean: - it has no last page
+    """
+    pass
