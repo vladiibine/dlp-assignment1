@@ -8,7 +8,7 @@ import django.http
 from home.forms import create_form_for_questions
 from home.models import Test, Answer, Result, Question
 # from home.session_util import TestSession
-from home.session_util import TestSession
+from home.session_util import TestSession, TestPaginator
 from home.view_util import get_next_page, save_answers, validate_navigation, \
     validate_results
 
@@ -53,10 +53,18 @@ def home_view(request):
 
     :param request:
     """
-    tests = Test.objects.all()
+    all_tests = Test.objects.all()
     test_session = TestSession(request.session)
     test_session.clear_answers()
-    context = {'tests': tests}
+
+    paginator = TestPaginator(request.session, all_tests, 3)
+    next_page = request.GET.get('next_page', False)
+    previous_page = request.GET.get('previous_page', False)
+    last_page = request.GET.get('last_page', False)
+    first_page = request.GET.get('first_page', False)
+
+    page = paginator.goto_page(next_page, previous_page, first_page, last_page)
+    context = {'tests': page.object_list, 'page': page}
     result = render(request, 'questionnaire/index.html', context)
     return result
 

@@ -1,6 +1,7 @@
 """Wrapper around the test session
 """
 import itertools
+from django.core.paginator import Paginator
 from home.models import Answer, Result, Test, Question
 
 
@@ -14,7 +15,8 @@ class TestSession(object):
         self.answers = session.get('answers', {})
         self.test_id = session.get('test_id', None)
         self.page_id = session.get('page_id', None)
-        self.last_page_id = self.last_test_id = None
+        self.last_page_id = session.get('last_page_id', None)
+        self.last_test_id = session.get('last_test_id', None)
         self.session = session
 
     def update_results(self, post_dict, test_id, page_id):
@@ -49,7 +51,7 @@ class TestSession(object):
 
         test_results = Result.objects.filter(
             max_points__lte=total_points, test__id=test_id).order_by(
-                '-max_points')
+            '-max_points')
         #2 compare with test results
         if test_results.count() > 0:
             return test_results[0]
@@ -69,16 +71,16 @@ class TestSession(object):
 
     def clear_answers(self):
         """Clears the answers of the previous user session."""
-        self.session.clear()
+        if 'answers' in self.session:
+            self.session.pop('answers')
+        self.answers = {}
         self.session.save()
 
     def can_display_results(self):
         """Returns True if the last test page was submitted
         :return:
         """
-        #todo Just check if all the questions with answers were answered
-        #get all questions with answers - check if every"question_ID" is
-        # contained in the answers list
+        #Just check if all the questions with answers were answered
         answerable_questions = Question.get_answerable_questions()
 
         for question in answerable_questions:
@@ -86,9 +88,80 @@ class TestSession(object):
                 return False
         return True
 
-        # last_test_id, last_page_id = self.get_last_test_page()
-        # last_test_page = Test.get_last_page_for(last_test_id)
-        # if last_page_id is not None:
-        #     return last_page_id == last_test_page
-        # else:
-        #     return int(self.session.get('test_id',None)) == last_test_page
+
+class TestPaginator(object):
+    """Paginates the tests on the home page
+    """
+
+    def __init__(self, session, collection, num_entries, current_page=None):
+        self.session = session
+        self.collection = collection
+        self.num_entries = num_entries
+        if current_page is not None:
+            self.current_home_page = current_page
+        else:
+            self.current_home_page = session.get('current_home_page', 1)
+        session['current_home_page'] = self.current_home_page
+        self._save_session()
+
+    def _set_current_page(self, page):
+        self.current_home_page = page
+        self.session['current_home_page'] = page
+        self._save_session()
+
+    def _save_session(self):
+        self.session.save()
+        self.session.modified = True
+
+    def _increment_current_page(self, inc=1):
+        self.current_home_page += inc
+        self.session['current_home_page'] = self.current_home_page
+        self._save_session()
+
+    def get_page(self, paginator, page=None):
+        """Returns either the specified page, or the current page of the
+            paginator
+
+        :param paginator:
+        :param page:
+        :return:
+        """
+        if page is not None:
+            return paginator.page(page)
+        else:
+            return paginator.page(self.current_home_page)
+
+    def convert_to_bool(self, next_, previous, first, last):
+        """Returns the values of the 4 strings to the correct bool
+            representation
+        :returns a tuple of bools
+        """
+        true_values = ['True', 'true', '1', True, u'true', u'True', u'1']
+        next_ = next_ in true_values
+        previous = previous in true_values
+        first = first in true_values
+        last = last in true_values
+        return next_, previous, first, last
+
+    def goto_page(self, next_, previous, first, last):
+        next_, previous, first, last = self.convert_to_bool(next_, previous,
+                                                            first, last)
+        paginator = Paginator(self.collection, self.num_entries)
+        if not (next_ or previous or first or last):
+            return paginator.page(self.current_home_page)
+
+        if next_:
+            self._increment_current_page()
+            return self.get_page(paginator)
+
+        if previous:
+            self._increment_current_page(-1)
+            return self.get_page(paginator)
+
+        if first:
+            self._set_current_page(1)
+            return self.get_page(paginator)
+
+        if last:
+            self._set_current_page(paginator.num_pages)
+            return self.get_page(paginator)

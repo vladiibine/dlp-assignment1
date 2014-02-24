@@ -3,11 +3,30 @@
 </br>
 </br>
 <table>
+    {#    {% for test in tests %}#}
+    {#        <tr>#}
+    {#            <td>#}
+    {#                <a href="{% url 'pages' test.id test.first_page %}">{{ test }}</a>#}
+    {#            </td>#}
+    {#        </tr>#}
+    {#    {% endfor %}#}
     {% for test in tests %}
         <tr>
             <td>
-                <a href="{% url 'pages' test.id test.first_page %}">{{ test }}</a>
+                {% if test.is_available %}
+                    <a href="{% url 'pages' test_id=test.id page_id=test.first_page %}">{{ test }}</a>
+                {% else %}
+                    {{ test }} - Not available yet
+                {% endif %}
             </td>
         </tr>
     {% endfor %}
+
 </table>
+
+{% if page.has_previous %}
+    <a href="{% url 'home' %}?previous_page=true">Previous</a>
+{% endif %}
+{% if page.has_next %}
+    <a href="{% url 'home' %}?next_page=true">Next</a>
+{% endif %}

@@ -67,6 +67,15 @@ class Test(models.Model):
         """
         return self.__class__.get_first_page_for(self.id)
 
+    def is_available(self):
+        """Returns True if the current test has at least 1 assigned answer.
+        """
+        for page in self.page_set.all():
+            for question in page.question_set.all():
+                if question.answer_set.count() > 0:
+                    return True
+        return False
+
 
 class Page(models.Model):
     """Model for the Page.

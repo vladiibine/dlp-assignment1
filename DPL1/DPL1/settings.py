@@ -104,3 +104,4 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 #This prevents changing the cookie data via Javascript
 SESSION_COOKIE_HTTPONLY = True
 # SESSION_ENGINE = 'home.session_util'
+SESSION_SAVE_EVERY_REQUEST = True

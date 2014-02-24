@@ -1,11 +1,16 @@
+from django.contrib.sessions.backends.signed_cookies import SessionStore
 from django.core.urlresolvers import reverse
+from django.http.request import QueryDict
 from django.test import TestCase
 from django.test import Client
 
 # Create your tests here.
 
 #todo: Testezi aici response. (status_code, context, content, templates)
+from django.test.client import RequestFactory
 from home.models import Test, Page, Question, Answer, Result
+from home.session_util import TestSession
+from home.views import pages_view, show_result_view
 
 Q_VERONICA_MICLE = "how's veronica micle"
 
@@ -205,11 +210,116 @@ class TestWorkflow(TestAbstract):
                                                    'page_id': self.t1_p5.id})
         final_page_answers = {'question_1': '1', 'question_3': '4',
                               'question_4': '7', 'test_id': self.test1.id,
-                              'page_id': self.t1_p5.id}
-        self.client.session['answers'] = {'question_1': '1', 'question_3': '4',
-                                          'question_4': '7'}
+                              'page_id': self.t1_p5.id,
+                              'last_page_id': self.t1_p4.id}
+        session = SessionStore('1234abcd')
+        session['last_page_id'] = unicode(self.t1_p4.id)
+        session.save()
+
         response = self.client.post(final_page_path, final_page_answers,
                                     follow=True)
         results_url = reverse('results', kwargs={'test_id': self.test1.id})
         #todo: this test can only pass if i modify the user session too...?
         self.assertRedirects(response, results_url)
+
+    def _create_session(self, **kwargs):
+        session = SessionStore("3c3c3c4b4b4b")
+        session.update(
+            {'last_page_id': self.t1_p4.id, 'test_id': self.test1.id,
+             'page_id': self.t1_p5.id})
+        session.update(kwargs)
+        session.save()
+        return session
+
+    def test_complete_test_200_factory(self):
+        factory = RequestFactory()
+        answers = {'question_1': '1', 'question_3': '4', 'question_4': '7'}
+        request_redirect = factory.post('/tests/1/5',
+                                        answers)
+        request_redirect.session = self._create_session(**answers)
+
+        response_redirected = pages_view(request_redirect,
+                                         test_id=self.test1.id,
+                                         page_id=self.t1_p5.id)
+        self.assertEqual(302, response_redirected.status_code)
+        request_results = factory.get(response_redirected.url,
+                                      {'answers': answers})
+        request_results.session = self._create_session(**answers)
+        response_results = show_result_view(request_results)
+        self.assertEqual(200, response_redirected.status_code)
+
+
+#todo - need to test TestSession!!! - that's the root of all evil
+
+class QueryDictDummy(dict):
+    def getlist(self, key):
+        return self[key]
+
+
+class TestSessionTest(TestAbstract):
+    """Tests for the home.session_util.TestSession
+    """
+
+    def _create_test_session(self, answers):
+        session = SessionStore('asdf1234')
+        session.update({'answers': answers})
+        test_session = TestSession(session)
+        return test_session
+
+    def _get_answers(self):
+        """Returns a dummy list of 4 answers for all the answerable questions
+        """
+        questions = Question.get_answerable_questions()
+        question_tags = [question.as_form_id() for question in questions]
+        answers = {tag: [str(num) for num in range(4)] for tag in
+                   question_tags}
+        return answers
+
+    def test_initialization_keeps_answers(self):
+        answers = self._get_answers()
+        test_session = self._create_test_session(answers)
+        self.assertEqual(test_session.answers, answers)
+
+    def test_update_adds_answers(self):
+        answers = self._get_answers()
+        test_session = self._create_test_session(answers)
+        new_answers = QueryDictDummy(answers)
+        new_answers.update({'question_654': ['9', '8', '7']})
+
+        test_session.update_results(new_answers, 0, 0)
+        self.assertTrue('question_654' in test_session.answers.keys())
+
+    def test_clear_answers(self):
+        """Tests if the answers are cleared
+        """
+        answers = self._get_answers()
+        test_session = self._create_test_session(answers)
+        test_session.clear_answers()
+        self.assertTrue(
+            not set(answers.keys()).issubset(test_session.answers.keys()))
+
+    def test_can_display_answers(self):
+        """The results page should be displayed if all questions got an answer
+        """
+        answers = self._get_answers()
+        test_session = self._create_test_session(answers)
+        self.assertTrue(test_session.can_display_results())
+
+    def test_can_not_display_results(self):
+        """The results page shouldn't be displayed if not all questions got an
+            answer.
+        """
+        answers = self._get_answers()
+        answers.popitem()
+        test_session = self._create_test_session(answers)
+        self.assertFalse(test_session.can_display_results())
+
+
+class TestModelTest(TestAbstract):
+    def test_has_first_page(self):
+        self.assertTrue(self.test1.is_available())
+
+
+class TestPaginatorTest(TestAbstract):
+    def test_keep_current_page(self):
+        pass
