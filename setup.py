@@ -1,13 +1,33 @@
 import os
+import sys
 from setuptools import setup, find_packages
+from pprint import pprint
+
+current_dir = os.getcwd()
+deployable_dir = os.path.join(os.getcwd(), 'DPL1')
+sys.path = list(set(sys.path))
+sys.path.remove(current_dir)
+sys.path.append(deployable_dir)
+
+pprint("~~~VWH::: %s" % str(sys.path))
 
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+#The files included as source files, that are build into a .tar.gz archive
+# can be specified in the MANIFEST.in
+
+#todo: check if
+#The files included in the .egg archive must be found with find_packages() ?
+
+
+found_packages = find_packages('./DPL1')
+print "~~~VWH::: %s" % found_packages
+
 setup(
     name="django-dlp-vgardelean-website1",
-    version='0.0.1',
+    version='0.0.2',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"
@@ -17,7 +37,9 @@ setup(
     url='https://github.com/vladiibine/dlp-assignment1',
     keywords="example tutorial django",
     # packages=['DLP','DLP.DLP','DLP.testing_app'],
-    packages=find_packages(),
+    #todo tell someone about this piece of crap so that they know!!!
+    package_dir={'': './DPL1'},
+    packages=found_packages,
     long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 1 - Planning",
@@ -29,3 +51,4 @@ setup(
     install_requires=["django==1.6.1", "south==0.8.4"],
     include_package_data=True
 )
+pprint("~~~VWH::: %s" % str(sys.path))

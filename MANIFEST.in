@@ -2,3 +2,6 @@ include README.txt
 include LICENSE
 recursive-include DPL1/testing_app/templates/testing_app *.html
 recursive-include DPL1/testing_app/fixtures *.json
+recursive-include DPL1 *.py
+recursive-include DPL1/testing_app *.py
+recursive-include DPL1/DPL1 *.py
