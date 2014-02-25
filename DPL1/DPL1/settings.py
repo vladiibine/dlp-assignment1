@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'testing',
+    'DPL1.testing_app',
     'south'
 )
 
@@ -89,12 +89,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#Vlad was here: custom settings introduced by me
-TEMPLATE_DIRS = ('templates')
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vlad was here: custom settings introduced by me
+## Pycharm `reference not resolved` is OK - works actually, because  this
+## is relative to the BASE_DIR
+TEMPLATE_DIRS = ('templates',)
 
 #Should reorder the domain objects on the admin site... the order needs to
 # be this:
-# ADMIN_REORDER = ( ('testing', ('Test', 'Page', 'Question')))
+# ADMIN_REORDER = ( ('testing_app', ('Test', 'Page', 'Question')))
 #Should use this module to store my session classes, to instantiate inside the
 #..custom middleware class
 ##Cache only session cookies
@@ -103,5 +105,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 #This prevents changing the cookie data via Javascript
 SESSION_COOKIE_HTTPONLY = True
-# SESSION_ENGINE = 'testing.session_util'
+# SESSION_ENGINE = 'testing_app.session_util'
 SESSION_SAVE_EVERY_REQUEST = True

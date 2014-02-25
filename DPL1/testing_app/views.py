@@ -5,12 +5,14 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 import django.http
 
-from testing.forms import create_form_for_questions
-from testing.models import Test, Answer, Result, Question
-# from testing.session_util import TestSession
-from testing.session_util import TestSession, TestPaginator
-from testing.view_util import get_next_page, save_answers, validate_navigation, \
-    validate_results
+from testing_app.forms import create_form_for_questions
+from testing_app.models import Test, Question
+
+# from testing_app.session_util import TestSession
+from testing_app.session_util import TestSession, TestPaginator
+from testing_app.view_util import (get_next_page, save_answers,
+                               validate_navigation,
+                               validate_results)
 
 
 class TestCioban(object):
@@ -18,11 +20,11 @@ class TestCioban(object):
 
 
 def test_view(request):
-    """Only used for testing.
+    """Only used for testing_app.
     :param request:
     :return:
     """
-    #atm testing forms
+    #atm testing_app forms
     # return django.http.HttpResponse("Hello world. Vlad was here!!!")
     # form = PageForm(request.POST)
     #tre sa returnez o clasa DynamicPageForm care sa contina toata randarea
@@ -33,7 +35,7 @@ def test_view(request):
     form = None
     pages = test.page_set
     TestCioban.prop += 1
-    return render(request, 'questionnaire/asdf.html',
+    return render(request, 'testing_app/asdf.html',
                   {'form': form, 'pages': pages, 'test': TestCioban})
 
 
@@ -49,7 +51,7 @@ def home_view(request):
     #instantiate the template in the dir given (project dir - cuz
     # of TEMPLATES_DIR ) name in the settings module of the project
     #create the context for the view - just fill the list of crap here
-    """The view for the testing page
+    """The view for the testing_app page
 
     :param request:
     """
@@ -65,14 +67,14 @@ def home_view(request):
 
     page = paginator.goto_page(next_page, previous_page, first_page, last_page)
     context = {'tests': page.object_list, 'page': page}
-    result = render(request, 'questionnaire/index.html', context)
+    result = render(request, 'testing_app/index.html', context)
     return result
 
 
 @validate_results
 def show_result_view(request, test_id):
     """Shows the results page for the corresponding test_id
-    :param test_id: id of the testing.models.Test
+    :param test_id: id of the testing_app.models.Test
     :param request:
     """
     context = {}
@@ -82,15 +84,15 @@ def show_result_view(request, test_id):
     if test_result is None:
         context['no_result'] = True
 
-    context['home_url'] = request.build_absolute_uri(reverse('testing'))
-    return render(request, 'questionnaire/results.html', context)
+    context['home_url'] = request.build_absolute_uri(reverse('testing_app'))
+    return render(request, 'testing_app/results.html', context)
 
 
 @save_answers
 @validate_navigation
 def pages_view(request, test_id, page_id=1):
     """Handles the logic for the test pages view:
-        "questionnaire/test_page.html"
+        "testing_app/test_page.html"
         :param request
         :param test_id
         :param page_id
@@ -120,5 +122,5 @@ def pages_view(request, test_id, page_id=1):
     if form.submittable is False:
         context['parent_url'] = request.META.get('HTTP_REFERER')
 
-    result = render(request, 'questionnaire/test_page.html', context)
+    result = render(request, 'testing_app/test_page.html', context)
     return result

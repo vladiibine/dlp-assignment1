@@ -25,7 +25,7 @@ class Test(models.Model):
     def get_first_page_for(cls, test_id):
         """Return the first page for test, or None
 
-        :param test_id: the id of the testing.models.Test
+        :param test_id: the id of the testing_app.models.Test
         """
         test = cls.objects.filter(id=test_id)
         if test.count() < 1:

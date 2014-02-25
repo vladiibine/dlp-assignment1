@@ -3,6 +3,7 @@ dlp-assignment1
 
 This contains the django project assigned in the training program.
 
+
 Installation:
 ==============
 
@@ -53,14 +54,19 @@ Assumptions: You have Python 2.7 (or above) installed:
 
 3. Install the DPL1 packages from the Pypi.
     3.1. Run the command
-        $ pip install DPL1
+        $ pip install django-dlp-vgardelean-website1
 
-        This will install the packages `home` and `DPL1` inside the
+        This will install the packages `testing_app` and `DPL1` inside the
             site-packages folder of your python installation in the current
             python installation (inside the active virtual environment, if
              you have such an environment)
 
-    3.2.
+    3.2. Testing that the installation worked:
+        3.2.1. Run the command
+            $ django-admin.py runserver --settings=DPL1.settings
+
+        3.2.2. If the output contains "Validating models..." skip to step 4.
+
 
 
 -This file is a copy of the old README.md file that could itself be added to

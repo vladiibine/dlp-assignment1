@@ -2,7 +2,7 @@
 """
 import itertools
 from django.core.paginator import Paginator
-from testing.models import Answer, Result, Test, Question
+from testing_app.models import Answer, Result, Test, Question
 
 
 class TestSession(object):
@@ -23,8 +23,8 @@ class TestSession(object):
         """Update the answers list from the POST object of the request
 
         :param post_dict: the request.POST which contains the form data
-        :param test_id: id of the testing.models.Test
-        :param page_id: the id of the testing.models.Page
+        :param test_id: id of the testing_app.models.Test
+        :param page_id: the id of the testing_app.models.Page
         """
         form_dict = {key: post_dict.getlist(key) for key in post_dict if
                      'question' in key}
@@ -39,7 +39,7 @@ class TestSession(object):
     def get_test_result(self, test_id):
         """Return the test result that the user got, at the end of the test.
 
-        :param test_id: id of the testing.models.Test
+        :param test_id: id of the testing_app.models.Test
         """
         answer_lists = (self.answers[question] for question in
                         self.answers.keys() if 'question' in question)
@@ -90,7 +90,7 @@ class TestSession(object):
 
 
 class TestPaginator(object):
-    """Paginates the tests on the testing page
+    """Paginates the tests on the testing_app page
     """
 
     def __init__(self, session, collection, num_entries, current_page=None):

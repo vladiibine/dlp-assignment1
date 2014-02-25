@@ -1,18 +1,18 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from testing import views
+from testing_app import views
 
 admin.autodiscover()
 
-urlpatterns = patterns('testing',
+urlpatterns = patterns('testing_app',
                        # Examples:
-                       # url(r'^$', 'DPL1.views.testing', name='testing'),
+                       # url(r'^$', 'DPL1.views.testing_app', name='testing_app'),
                        # url(r'^blog/', include('blog.urls')),
 
                        url(r'^admin/', include(admin.site.urls),
                            name='admin'),
-                       url(r'^$', views.home_view, name='testing'),
+                       url(r'^$', views.home_view, name='testing_app'),
                        url(r'tests/(?P<test_id>\d+)/results',
                            views.show_result_view, name='results'),
                        url(r'^tests/(?P<test_id>\d+)/(?P<page_id>\d+)',

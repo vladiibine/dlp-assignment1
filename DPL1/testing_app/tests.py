@@ -9,9 +9,9 @@ from django.test import Client
 
 #todo: Testezi aici response. (status_code, context, content, templates)
 from django.test.client import RequestFactory
-from testing.models import Test, Page, Question, Answer, Result
-from testing.session_util import TestSession, TestPaginator
-from testing.views import pages_view, show_result_view
+from testing_app.models import Test, Page, Question, Answer, Result
+from testing_app.session_util import TestSession, TestPaginator
+from testing_app.views import pages_view, show_result_view
 
 Q_VERONICA_MICLE = "how's veronica micle"
 
@@ -114,21 +114,21 @@ class TestAbstract(TestCase):
 
 class HomeTest(TestAbstract):
     def test_home_200(self):
-        """Check if testing page works with a few tests available
+        """Check if testing_app page works with a few tests available
         """
-        response = self._get_response('testing')
+        response = self._get_response('testing_app')
         self.assertEqual(200, response.status_code)
 
     def test_home_empty(self):
-        """Check if testing page works empty
+        """Check if testing_app page works empty
         """
         Test.objects.all().delete()
-        response = self._get_response('testing')
+        response = self._get_response('testing_app')
         self.assertTrue(
-            'Welcome to the awesomest testing site' in response.content)
+            'Welcome to the awesomest testing_app site' in response.content)
 
     def test_home_has_answers(self):
-        response = self._get_response("testing")
+        response = self._get_response("testing_app")
         self.assertTrue(TEST_1_NAME in response.content)
 
 
@@ -152,7 +152,7 @@ class PagesTest(TestAbstract):
                                         'page_id': self.t1_page2.id})
         #follow = True mi-o aratat DAN... ca sa followeasca redirecturile
         response = self.client.get(path, follow=True)
-        self.assertEqual(response.request['PATH_INFO'], reverse('testing'))
+        self.assertEqual(response.request['PATH_INFO'], reverse('testing_app'))
 
 
 class ResultsTest(TestAbstract):
@@ -164,11 +164,11 @@ class ResultsTest(TestAbstract):
     def test_err_msg_response(self):
         path = reverse('results', kwargs={'test_id': self.test1.id})
         response = self.client.get(path, follow=True)
-        self.assertRedirects(response, reverse('testing'))
+        self.assertRedirects(response, reverse('testing_app'))
 
 
 class NavigationValidationTest(TestAbstract):
-    """Tests for the navigation validator `testing.view_util.validate_navigation`
+    """Tests for the navigation validator `testing_app.view_util.validate_navigation`
     """
 
     def test_navigation_to_first_page_simple(self):
@@ -258,7 +258,7 @@ class QueryDictDummy(dict):
 
 
 class TestSessionTest(TestAbstract):
-    """Tests for the testing.session_util.TestSession
+    """Tests for the testing_app.session_util.TestSession
     """
 
     def _create_test_session(self, answers):

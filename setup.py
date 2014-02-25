@@ -1,14 +1,13 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-
 setup(
-    name="DPL1",
-    version='0.0.6',
+    name="django-dlp-vgardelean-website1",
+    version='0.0.1',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"
@@ -17,7 +16,8 @@ setup(
     ),
     url='https://github.com/vladiibine/dlp-assignment1',
     keywords="example tutorial django",
-    packages=['DPL1', 'testing'],
+    # packages=['DPL1','DPL1.DPL1','DPL1.testing_app'],
+    packages=find_packages(),
     long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 1 - Planning",
@@ -26,5 +26,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: Free For Educational Use",
     ],
-    install_requires=["django==1.6.1", "south==0.8.4"]
+    install_requires=["django==1.6.1", "south==0.8.4"],
+    include_package_data=True
 )
