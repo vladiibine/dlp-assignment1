@@ -1,4 +1,5 @@
 from django.contrib.sessions.backends.signed_cookies import SessionStore
+from django.core.paginator import Paginator, EmptyPage
 from django.core.urlresolvers import reverse
 from django.http.request import QueryDict
 from django.test import TestCase
@@ -9,7 +10,7 @@ from django.test import Client
 #todo: Testezi aici response. (status_code, context, content, templates)
 from django.test.client import RequestFactory
 from home.models import Test, Page, Question, Answer, Result
-from home.session_util import TestSession
+from home.session_util import TestSession, TestPaginator
 from home.views import pages_view, show_result_view
 
 Q_VERONICA_MICLE = "how's veronica micle"
@@ -320,6 +321,75 @@ class TestModelTest(TestAbstract):
         self.assertTrue(self.test1.is_available())
 
 
-class TestPaginatorTest(TestAbstract):
-    def test_keep_current_page(self):
+class SessionDummy(dict):
+    """Mock for a session - supplies the `save` method and the default
+        dict behavior
+    """
+
+    def save(self):
+        """Dummy method, used for mocking a session object
+        """
         pass
+
+
+class TestPaginatorTest(TestAbstract):
+    def _get_paginator(self):
+        dummy_session = SessionDummy()
+        collection = [1, 2, 3, 4, 5, 6, 7, 8]
+        test_paginator = TestPaginator(dummy_session, collection, 3)
+        return test_paginator
+
+    def test_spawn_at_page_1(self):
+        test_paginator = self._get_paginator()
+        page = test_paginator.goto_page()
+
+        self.assertEqual(1, page.number)
+
+    def test_first_has_no_previos_page(self):
+        """Checks that the first page shouldn't have a previous page
+        """
+        test_paginator = self._get_paginator()
+        page = test_paginator.goto_page()
+
+        self.assertRaises(EmptyPage, page.previous_page_number)
+
+    def test_first_has_next_page(self):
+        """Checks that the first page has a next page
+        """
+        test_paginator = self._get_paginator()
+        page = test_paginator.goto_page()
+
+        self.assertEqual(2, page.next_page_number())
+
+    def test_goto_next_page(self):
+        """Tests navigation to the 'next' page
+        """
+        test_paginator = self._get_paginator()
+        page = test_paginator.goto_page(True)
+
+        self.assertEqual(2, page.number)
+
+    def test_goto_first_page(self):
+        """Tests navigation to the 'first' page
+        """
+        test_paginator = self._get_paginator()
+        test_paginator.goto_page(True)
+        page = test_paginator.goto_page(first=True)
+
+        self.assertEqual(1, page.number)
+
+    def test_goto_previous_page(self):
+        """Tests navigating to the previous page
+        """
+        test_paginator = self._get_paginator()
+        test_paginator.goto_page(True)
+        page = test_paginator.goto_page(previous=True)
+        self.assertEqual(1, page.number)
+
+    def test_goto_last_page(self):
+        """Tests navigation to the last page
+        """
+        test_paginator = self._get_paginator()
+        page = test_paginator.goto_page(last=True)
+
+        self.assertEqual(3, page.number)

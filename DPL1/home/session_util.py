@@ -111,14 +111,13 @@ class TestPaginator(object):
 
     def _save_session(self):
         self.session.save()
-        self.session.modified = True
 
     def _increment_current_page(self, inc=1):
         self.current_home_page += inc
         self.session['current_home_page'] = self.current_home_page
         self._save_session()
 
-    def get_page(self, paginator, page=None):
+    def _get_page(self, paginator, page=None):
         """Returns either the specified page, or the current page of the
             paginator
 
@@ -131,7 +130,8 @@ class TestPaginator(object):
         else:
             return paginator.page(self.current_home_page)
 
-    def convert_to_bool(self, next_, previous, first, last):
+    def _convert_to_bool(self, next_, previous, first,
+                         last):
         """Returns the values of the 4 strings to the correct bool
             representation
         :returns a tuple of bools
@@ -143,25 +143,36 @@ class TestPaginator(object):
         last = last in true_values
         return next_, previous, first, last
 
-    def goto_page(self, next_, previous, first, last):
-        next_, previous, first, last = self.convert_to_bool(next_, previous,
-                                                            first, last)
+    def goto_page(self, next_=False, previous=False, first=False, last=False):
+        """If none of the arguments are true, returns the current page.
+
+        Else, navigates to the one specified by the first parameter that is
+         true, in the same order as the parameters.
+
+        :param next_:
+        :param previous:
+        :param first:
+        :param last:
+        :return:
+        """
+        next_, previous, first, last = self._convert_to_bool(next_, previous,
+                                                             first, last)
         paginator = Paginator(self.collection, self.num_entries)
         if not (next_ or previous or first or last):
             return paginator.page(self.current_home_page)
 
         if next_:
             self._increment_current_page()
-            return self.get_page(paginator)
+            return self._get_page(paginator)
 
         if previous:
             self._increment_current_page(-1)
-            return self.get_page(paginator)
+            return self._get_page(paginator)
 
         if first:
             self._set_current_page(1)
-            return self.get_page(paginator)
+            return self._get_page(paginator)
 
         if last:
             self._set_current_page(paginator.num_pages)
-            return self.get_page(paginator)
+            return self._get_page(paginator)

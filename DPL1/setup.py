@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="DPL1",
-    version='0.0.1',
+    version='0.0.2',
     author='Ardelean Vlad',
     description=("The Django learning program project - a site where the uses"
                  "can take tests, and the admins can maintain configurations"
