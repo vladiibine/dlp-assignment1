@@ -16,7 +16,7 @@ setup(
     ),
     url='https://github.com/vladiibine/dlp-assignment1',
     keywords="example tutorial django",
-    # packages=['DPL1','DPL1.DPL1','DPL1.testing_app'],
+    # packages=['DLP','DLP.DLP','DLP.testing_app'],
     packages=find_packages(),
     long_description=read('README.txt'),
     classifiers=[

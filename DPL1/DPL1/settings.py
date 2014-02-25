@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'DPL1.testing_app',
+    'testing_app',
     'south'
 )
 

@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('testing_app',
                        # Examples:
-                       # url(r'^$', 'DPL1.views.testing_app', name='testing_app'),
+                       # url(r'^$', 'DLP.views.testing_app', name='testing_app'),
                        # url(r'^blog/', include('blog.urls')),
 
                        url(r'^admin/', include(admin.site.urls),

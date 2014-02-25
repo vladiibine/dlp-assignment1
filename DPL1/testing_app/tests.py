@@ -1,7 +1,6 @@
 from django.contrib.sessions.backends.signed_cookies import SessionStore
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import EmptyPage
 from django.core.urlresolvers import reverse
-from django.http.request import QueryDict
 from django.test import TestCase
 from django.test import Client
 
@@ -50,9 +49,10 @@ class TestAbstract(TestCase):
                                                 text=ALMOST_GOOD,
                                                 description=NO_DESCRIPTION_2,
                                                 max_points=99)
-        self.t1_result3 = Result.objects.create(test=self.test1, text=BAD,
-                                                description=RESULT_3_NO_DESCRIPTION,
-                                                max_points=10)
+        self.t1_result3 = (
+            Result.objects.create(test=self.test1, text=BAD,
+                                  description=RESULT_3_NO_DESCRIPTION,
+                                  max_points=10))
         self.t1_page1 = Page.objects.create(test=self.test1, sequence=1)
         self.t1_p1_question1 = Question.objects.create(page=self.t1_page1,
                                                        text=Q_ARE_YOU_SURE,
@@ -168,7 +168,8 @@ class ResultsTest(TestAbstract):
 
 
 class NavigationValidationTest(TestAbstract):
-    """Tests for the navigation validator `testing_app.view_util.validate_navigation`
+    """Tests for the navigation validator `testing_app.view_util
+    .validate_navigation`
     """
 
     def test_navigation_to_first_page_simple(self):
@@ -253,7 +254,15 @@ class TestWorkflow(TestAbstract):
 #todo - need to test TestSession!!! - that's the root of all evil
 
 class QueryDictDummy(dict):
+    """Dummy for the query dict
+    """
+
     def getlist(self, key):
+        """Dummy getlist method
+
+        :param key:
+        :return:
+        """
         return self[key]
 
 
