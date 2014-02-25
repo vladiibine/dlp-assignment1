@@ -21,7 +21,7 @@ class CustomForm(forms.Form):
 def create_form_for_questions(questions):
     """Creates a dynamic form instance, given the questions in a page
 
-    :param questions: django.db.models.QuerySet of home.models.Question
+    :param questions: django.db.models.QuerySet of testing.models.Question
     :return: django.forms.Form instance
     """
     bases = (CustomForm,)

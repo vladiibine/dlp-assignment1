@@ -5,11 +5,11 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 import django.http
 
-from home.forms import create_form_for_questions
-from home.models import Test, Answer, Result, Question
-# from home.session_util import TestSession
-from home.session_util import TestSession, TestPaginator
-from home.view_util import get_next_page, save_answers, validate_navigation, \
+from testing.forms import create_form_for_questions
+from testing.models import Test, Answer, Result, Question
+# from testing.session_util import TestSession
+from testing.session_util import TestSession, TestPaginator
+from testing.view_util import get_next_page, save_answers, validate_navigation, \
     validate_results
 
 
@@ -49,7 +49,7 @@ def home_view(request):
     #instantiate the template in the dir given (project dir - cuz
     # of TEMPLATES_DIR ) name in the settings module of the project
     #create the context for the view - just fill the list of crap here
-    """The view for the home page
+    """The view for the testing page
 
     :param request:
     """
@@ -72,7 +72,7 @@ def home_view(request):
 @validate_results
 def show_result_view(request, test_id):
     """Shows the results page for the corresponding test_id
-    :param test_id: id of the home.models.Test
+    :param test_id: id of the testing.models.Test
     :param request:
     """
     context = {}
@@ -82,7 +82,7 @@ def show_result_view(request, test_id):
     if test_result is None:
         context['no_result'] = True
 
-    context['home_url'] = request.build_absolute_uri(reverse('home'))
+    context['home_url'] = request.build_absolute_uri(reverse('testing'))
     return render(request, 'questionnaire/results.html', context)
 
 

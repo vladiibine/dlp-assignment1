@@ -12,6 +12,9 @@ class Test(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
 
+    class Meta:
+        db_table = 'home_test'
+
     def __str__(self):
         return u"{0:s}".format(self.name)
 
@@ -22,7 +25,7 @@ class Test(models.Model):
     def get_first_page_for(cls, test_id):
         """Return the first page for test, or None
 
-        :param test_id: the id of the home.models.Test
+        :param test_id: the id of the testing.models.Test
         """
         test = cls.objects.filter(id=test_id)
         if test.count() < 1:
@@ -85,6 +88,9 @@ class Page(models.Model):
     test = models.ForeignKey(Test)
     sequence = models.IntegerField()
 
+    class Meta:
+        db_table = 'home_page'
+
     def __str__(self):
         return u"{0:s} - Page {1:d}".format(self.test, self.sequence)
 
@@ -124,6 +130,9 @@ class Question(models.Model):
     sequence = models.IntegerField(null=True)
     multiple_answers = models.BooleanField(default=0)
 
+    class Meta:
+        db_table = 'home_question'
+
     def __str__(self):
         return u"{0:s} - Question : {1:s}".format(self.page, self.text)
 
@@ -152,6 +161,9 @@ class Answer(models.Model):
     text = models.CharField(max_length=50)
     points = models.IntegerField()
 
+    class Meta:
+        db_table = 'home_answer'
+
     def __unicode__(self):
         return u"{0:s}".format(self.text)
 
@@ -169,6 +181,9 @@ class Result(models.Model):
 
     Contains the description of the result of a test, for a point maximum.
     """
+
+    class Meta:
+        db_table = 'home_result'
     test = models.ForeignKey(Test)
     text = models.CharField(max_length=50)
     description = models.CharField(max_length=200)

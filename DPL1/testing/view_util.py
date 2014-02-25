@@ -5,8 +5,8 @@ from django.core.urlresolvers import reverse
 
 from django.http import HttpResponseRedirect
 
-from home.models import Page, Test
-from home.session_util import TestSession
+from testing.models import Page, Test
+from testing.session_util import TestSession
 
 
 def disable_navigation(func):
@@ -80,19 +80,19 @@ def render_last_page(request):
 
 
 def render_default_page(request):
-    """ When possible returns the last page, or the home page
+    """ When possible returns the last page, or the testing page
 
     :param request: a HttpRequest object
     """
     try:
         default_page = render_last_page(request)
     except UrlModifiedError:
-        default_page = HttpResponseRedirect(reverse('home'))
+        default_page = HttpResponseRedirect(reverse('testing'))
     return default_page
 
 
 def validate_navigation(func):
-    """Decorator: Makes sure the workflow of the home application is respected.
+    """Decorator: Makes sure the workflow of the testing application is respected.
 
     :param func:
     :return:
@@ -105,8 +105,8 @@ def validate_navigation(func):
                 :param args:
                 :param request:
                 """
-        # if current path is the 'home' path, allow navigation
-        if request.path == reverse('home'):
+        # if current path is the 'testing' path, allow navigation
+        if request.path == reverse('testing'):
             return func(request, *args, **kwargs)
 
         #check if the current page is a valid successor for the test pages
@@ -124,7 +124,7 @@ def validate_navigation(func):
             else:
                 return render_default_page(request)
         else:
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('testing'))
 
     return wrapper
 
@@ -134,8 +134,8 @@ def get_next_page(test_id, page_id):
 
     Either the next page in the test that has questions,
         or 0 - meaning the results page.
-    :param page_id: id of the home.models.Page
-    :param test_id: if of the home.models.Test
+    :param page_id: id of the testing.models.Page
+    :param test_id: if of the testing.models.Test
     """
     return Test.get_next_page_for(test_id, page_id)
     # next_pages = Page.objects.filter(id__gt=page_id, test__id=test_id)

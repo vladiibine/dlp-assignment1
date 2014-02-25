@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="DPL1",
-    version='0.0.5',
+    version='0.0.6',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"
@@ -17,7 +17,7 @@ setup(
     ),
     url='https://github.com/vladiibine/dlp-assignment1',
     keywords="example tutorial django",
-    packages=['DPL1', 'home'],
+    packages=['DPL1', 'testing'],
     long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 1 - Planning",
