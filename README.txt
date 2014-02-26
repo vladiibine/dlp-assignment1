@@ -54,18 +54,24 @@ Assumptions: You have Python 2.7 (or above) installed:
 
 3. Install the DPL1 packages from the Pypi.
     3.1. Run the command
-        $ pip install django-dlp-vgardelean-website1
+        $ pip install dj-vga-w1
 
-        This will install the packages `dpl1_main.testing_app` and `DPL1` inside the
+        This will install the package `dpl1_main` inside the
             site-packages folder of your python installation in the current
             python installation (inside the active virtual environment, if
              you have such an environment)
 
     3.2. Testing that the installation worked:
-        3.2.1. Run the command
+        3.2.1. Running the tests for the application
+            $ django-admin.py test dpl1_main.testing_app
+                    --settings=dpl1_main.DPL1.settings
+
+        3.2.2. You should see "Creating test database for alias 'default'..."
+                in the output. If this isn't the case,
+        3.2.3. Run the command
             $ django-admin.py runserver --settings=DPL1.settings
 
-        3.2.2. If the output contains "Validating models..." skip to step 4.
+        3.2.4. If the output contains "Validating models..." skip to step 4.
 
 
 

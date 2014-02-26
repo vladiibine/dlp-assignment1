@@ -8,7 +8,13 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DPL1.settings")
+from deployment_util import correct_sys_path
+
+
+
+correct_sys_path('../..')
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dpl1_main.DPL1.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
