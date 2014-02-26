@@ -124,8 +124,10 @@ class HomeTest(TestAbstract):
         """
         Test.objects.all().delete()
         response = self._get_response('testing_app')
-        self.assertTrue(
-            'Welcome to the awesomest testing_app site' in response.content)
+        
+        templates = [template.name for template in response.templates]
+        target_template = 'testing_app/index.html'
+        self.assertTrue(target_template in templates)
 
     def test_home_has_answers(self):
         response = self._get_response("testing_app")
