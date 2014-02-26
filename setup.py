@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 from pprint import pprint
 
 current_dir = os.getcwd()
-deployable_dir = os.path.join(os.getcwd(), 'DPL1')
+deployable_dir = os.path.join(os.getcwd(), 'dpl1_main')
 sys.path = list(set(sys.path))
 sys.path.remove(current_dir)
 sys.path.append(deployable_dir)
@@ -22,7 +22,7 @@ def read(fname):
 #The files included in the .egg archive must be found with find_packages() ?
 
 
-found_packages = find_packages('./DPL1')
+found_packages = find_packages()
 print "~~~VWH::: %s" % found_packages
 
 setup(
@@ -38,8 +38,9 @@ setup(
     keywords="example tutorial django",
     # packages=['DLP','DLP.DLP','DLP.testing_app'],
     #todo tell someone about this piece of crap so that they know!!!
-    package_dir={'': './DPL1'},
+    # package_dir={'': './dpl1_main'},
     packages=found_packages,
+    package_data={'': ['*.html', '*.sqlite3', '*.json']},
     long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 1 - Planning",
@@ -51,4 +52,4 @@ setup(
     install_requires=["django==1.6.1", "south==0.8.4"],
     include_package_data=True
 )
-pprint("~~~VWH::: %s" % str(sys.path))
+# pprint("~~~VWH::: %s" % str(sys.path))
