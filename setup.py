@@ -27,7 +27,7 @@ print "~~~VWH::: %s" % found_packages
 
 setup(
     name="django-dlp-vgardelean-website1",
-    version='0.0.2',
+    version='0.0.6',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"

@@ -124,7 +124,7 @@ class HomeTest(TestAbstract):
         """
         Test.objects.all().delete()
         response = self._get_response('testing_app')
-        
+
         templates = [template.name for template in response.templates]
         target_template = 'testing_app/index.html'
         self.assertTrue(target_template in templates)
