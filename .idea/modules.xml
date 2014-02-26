@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DPL1/.idea/DPL1.iml" filepath="$PROJECT_DIR$/DPL1/.idea/DPL1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dpl1_main/.idea/DPL1.iml" filepath="$PROJECT_DIR$/dpl1_main/.idea/DPL1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/dlp-assignment1.iml" filepath="$PROJECT_DIR$/.idea/dlp-assignment1.iml" />
     </modules>
   </component>

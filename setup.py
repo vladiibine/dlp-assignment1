@@ -26,8 +26,8 @@ found_packages = find_packages()
 print "~~~VWH::: %s" % found_packages
 
 setup(
-    name="django-dlp-vgardelean-website1",
-    version='0.0.6',
+    name="dj-vga-w1",
+    version='0.0.9',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"
@@ -36,7 +36,7 @@ setup(
     ),
     url='https://github.com/vladiibine/dlp-assignment1',
     keywords="example tutorial django",
-    # packages=['DLP','DLP.DLP','DLP.testing_app'],
+    # packages=['DLP','DLP.DLP','DLP.dpl1_main.testing_app'],
     #todo tell someone about this piece of crap so that they know!!!
     # package_dir={'': './dpl1_main'},
     packages=found_packages,

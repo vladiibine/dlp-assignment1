@@ -56,7 +56,7 @@ Assumptions: You have Python 2.7 (or above) installed:
     3.1. Run the command
         $ pip install django-dlp-vgardelean-website1
 
-        This will install the packages `testing_app` and `DPL1` inside the
+        This will install the packages `dpl1_main.testing_app` and `DPL1` inside the
             site-packages folder of your python installation in the current
             python installation (inside the active virtual environment, if
              you have such an environment)
