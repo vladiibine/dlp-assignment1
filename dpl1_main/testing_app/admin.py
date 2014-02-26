@@ -1,24 +1,24 @@
 from django.contrib import admin
 
-import testing_app.models
+import dpl1_main.testing_app.models
 
 # Register your models here.
 
 
 class PageInline(admin.TabularInline):
-    model = testing_app.models.Page
+    model = dpl1_main.testing_app.models.Page
 
 
 class QuestionInline(admin.TabularInline):
-    model = testing_app.models.Question
+    model = dpl1_main.testing_app.models.Question
 
 
 class AnswerInline(admin.TabularInline):
-    model = testing_app.models.Answer
+    model = dpl1_main.testing_app.models.Answer
 
 
 class ResultInline(admin.TabularInline):
-    model = testing_app.models.Result
+    model = dpl1_main.testing_app.models.Result
 
 
 class TestAdmin(admin.ModelAdmin):
@@ -36,6 +36,6 @@ class QuestionAdmin(admin.ModelAdmin):
     ordering = ('page', 'text')
 
 
-admin.site.register(testing_app.models.Test, TestAdmin)
-admin.site.register(testing_app.models.Page, PageAdmin)
-admin.site.register(testing_app.models.Question, QuestionAdmin)
+admin.site.register(dpl1_main.testing_app.models.Test, TestAdmin)
+admin.site.register(dpl1_main.testing_app.models.Page, PageAdmin)
+admin.site.register(dpl1_main.testing_app.models.Question, QuestionAdmin)

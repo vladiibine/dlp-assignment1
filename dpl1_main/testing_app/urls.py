@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from testing_app import views
+from dpl1_main.testing_app import views
 
 admin.autodiscover()
 

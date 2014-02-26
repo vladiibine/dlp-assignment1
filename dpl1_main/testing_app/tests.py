@@ -8,9 +8,9 @@ from django.test import Client
 
 #todo: Testezi aici response. (status_code, context, content, templates)
 from django.test.client import RequestFactory
-from testing_app.models import Test, Page, Question, Answer, Result
-from testing_app.session_util import TestSession, TestPaginator
-from testing_app.views import pages_view, show_result_view
+from dpl1_main.testing_app.models import Test, Page, Question, Answer, Result
+from dpl1_main.testing_app.session_util import TestSession, TestPaginator
+from dpl1_main.testing_app.views import pages_view, show_result_view
 
 Q_VERONICA_MICLE = "how's veronica micle"
 
@@ -124,7 +124,8 @@ class HomeTest(TestAbstract):
         """
         Test.objects.all().delete()
         response = self._get_response('testing_app')
-
+        # self.assertTrue(
+        #     'Welcome to the awesomest testing site' in response.content)
         templates = [template.name for template in response.templates]
         target_template = 'testing_app/index.html'
         self.assertTrue(target_template in templates)

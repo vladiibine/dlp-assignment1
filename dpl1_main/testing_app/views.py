@@ -5,12 +5,12 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 import django.http
 
-from testing_app.forms import create_form_for_questions
-from testing_app.models import Test, Question
+from dpl1_main.testing_app.forms import create_form_for_questions
+from dpl1_main.testing_app.models import Test, Question
 
-# from testing_app.session_util import TestSession
-from testing_app.session_util import TestSession, TestPaginator
-from testing_app.view_util import (get_next_page, save_answers,
+# from dpl1_main.testing_app.session_util import TestSession
+from dpl1_main.testing_app.session_util import TestSession, TestPaginator
+from dpl1_main.testing_app.view_util import (get_next_page, save_answers,
                                validate_navigation,
                                validate_results)
 

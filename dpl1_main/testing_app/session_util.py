@@ -2,7 +2,7 @@
 """
 import itertools
 from django.core.paginator import Paginator
-from testing_app.models import Answer, Result, Test, Question
+from dpl1_main.testing_app.models import Answer, Result, Test, Question
 
 
 class TestSession(object):

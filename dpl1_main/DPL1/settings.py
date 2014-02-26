@@ -55,9 +55,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'DPL1.urls'
+ROOT_URLCONF = 'dpl1_main.DPL1.urls'
 
-WSGI_APPLICATION = 'DPL1.wsgi.application'
+WSGI_APPLICATION = 'dpl1_main.DPL1.wsgi.application'
 
 
 # Database

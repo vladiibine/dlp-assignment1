@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-import testing_app.urls
+import dpl1_main.testing_app.urls
 
 admin.autodiscover()
 
@@ -10,5 +10,5 @@ urlpatterns = patterns('',
                        # url(r'^$', 'DLP.views.testing_app', name='testing_app'),
                        # url(r'^blog/', include('blog.urls')),
                        url(r'^testing/',
-                           include(testing_app.urls, app_name='testing_app'))
+                           include(dpl1_main.testing_app.urls, app_name='testing_app'))
 )

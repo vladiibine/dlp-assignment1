@@ -5,8 +5,8 @@ from django.core.urlresolvers import reverse
 
 from django.http import HttpResponseRedirect
 
-from testing_app.models import Page, Test
-from testing_app.session_util import TestSession
+from dpl1_main.testing_app.models import Page, Test
+from dpl1_main.testing_app.session_util import TestSession
 
 
 def disable_navigation(func):
