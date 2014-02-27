@@ -63,10 +63,20 @@ WSGI_APPLICATION = 'dpl1_main.DPL1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'vwhdb.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'vwhdb.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vwh_db',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': 'qwer',
+        'HOST': 'localhost'
     }
 }
 
@@ -92,7 +102,8 @@ STATIC_URL = '/static/'
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vlad was here: custom settings introduced by me
 ## Pycharm `reference not resolved` is OK - works actually, because  this
 ## is relative to the BASE_DIR
-TEMPLATE_DIRS = ('templates',)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'testing_app/templates'),
+                 os.path.join(BASE_DIR, 'testing_app/static'),)
 
 #Should reorder the domain objects on the admin site... the order needs to
 # be this:
