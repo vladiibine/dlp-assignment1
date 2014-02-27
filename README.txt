@@ -73,6 +73,39 @@ Assumptions: You have Python 2.7 (or above) installed:
 
         3.2.4. If the output contains "Validating models..." skip to step 4.
 
+4. Deployment on apache2 with mod_wsgi
+    Notice that in all the examples at step 3 the option --settings=... was
+        used. You will have to provide that settings file for yourself, or
+        customize the one given in order to change settings like the database
+        connection engine.
+
+    Also, the interaction between the apache server and the other components
+        (for instance a database connector) is out of scope for this document.
+    You will have to take care that the chosen server has the proper
+        authorizations to work with the other systems.
+
+    4.1. Making the app work with mysql:
+        In dpl1_main.DPL1.settings, you have the `DATABASES` entry
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.mysql',
+                    'NAME': 'vwh_db',
+                    'PORT': '3306',
+                    'USER': 'root',
+                    'PASSWORD': 'qwer',
+                    'HOST': 'localhost'
+                }
+            }
+
+        Notice the elements, because each one of them is important:
+        'ENGINE' - the value is standard, it's standard django engine for Mysql
+        'NAME' - the name of a schema that is hosted by the 'HOST'
+        'PORT' - the port the instance database server is listening on
+        'USER' - a valid user for the database, with rights
+        'PASSWORD' - the password
+        'HOST' - the address an IP address (or domain name) for the server
+            hosting the database.
+
 
 
 -This file is a copy of the old README.md file that could itself be added to
