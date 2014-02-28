@@ -6,7 +6,6 @@ from django.test import Client
 
 # Create your tests here.
 
-#todo: Testezi aici response. (status_code, context, content, templates)
 from django.test.client import RequestFactory
 from dpl1_main.testing_app.models import Test, Page, Question, Answer, Result
 from dpl1_main.testing_app.session_util import TestSession, TestPaginator
@@ -226,7 +225,6 @@ class TestWorkflow(TestAbstract):
         response = self.client.post(final_page_path, final_page_answers,
                                     follow=True)
         results_url = reverse('results', kwargs={'test_id': self.test1.id})
-        #todo: this test can only pass if i modify the user session too...?
         # self.assertRedirects(response, results_url)
         self.fail("Couldn't manage to do this test with django test client"
                   "...should try with selenium or django-webtest")
@@ -259,8 +257,6 @@ class TestWorkflow(TestAbstract):
         self.fail("Couldn't manage to do this test with django test client"
                   "...should try with selenium or django-webtest")
 
-
-#todo - need to test TestSession!!! - that's the root of all evil
 
 class QueryDictDummy(dict):
     """Dummy for the query dict
@@ -411,3 +407,5 @@ class TestPaginatorTest(TestAbstract):
         page = test_paginator.goto_page(last=True)
 
         self.assertEqual(3, page.number)
+
+from dpl1_main.testing_app.integration_tests import TestWorkflow as TW2

@@ -11,32 +11,8 @@ from dpl1_main.testing_app.models import Test, Question
 # from dpl1_main.testing_app.session_util import TestSession
 from dpl1_main.testing_app.session_util import TestSession, TestPaginator
 from dpl1_main.testing_app.view_util import (get_next_page, save_answers,
-                               validate_navigation,
-                               validate_results)
-
-
-class TestCioban(object):
-    prop = 4
-
-
-def test_view(request):
-    """Only used for testing_app.
-    :param request:
-    :return:
-    """
-    #atm testing_app forms
-    # return django.http.HttpResponse("Hello world. Vlad was here!!!")
-    # form = PageForm(request.POST)
-    #tre sa returnez o clasa DynamicPageForm care sa contina toata randarea
-    # formului, pt toata pagina, si gata.
-    test = Test.objects.get(id=4)
-
-    # form = create_form_for_questions()
-    form = None
-    pages = test.page_set
-    TestCioban.prop += 1
-    return render(request, 'testing_app/asdf.html',
-                  {'form': form, 'pages': pages, 'test': TestCioban})
+                                             validate_navigation,
+                                             validate_results)
 
 
 def error_view(request):
@@ -74,18 +50,21 @@ def home_view(request):
 @validate_results
 def show_result_view(request, test_id):
     """Shows the results page for the corresponding test_id
+
     :param test_id: id of the testing_app.models.Test
     :param request:
     """
+    #TODO: this also needs to be tested with django-webtest
     context = {}
     test_session = TestSession(request.session)
     test_result = test_session.get_test_result(test_id)
     context['result'] = test_result
-    if test_result is None:
-        context['no_result'] = True
-
     context['home_url'] = request.build_absolute_uri(reverse('testing_app'))
-    return render(request, 'testing_app/results.html', context)
+
+    if test_result is None:
+        return render(request, 'testing_app/results_unavailable.html', context)
+    else:
+        return render(request, 'testing_app/results.html', context)
 
 
 @save_answers
