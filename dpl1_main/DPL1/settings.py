@@ -102,8 +102,7 @@ STATIC_URL = '/static/'
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vlad was here: custom settings introduced by me
 ## Pycharm `reference not resolved` is OK - works actually, because  this
 ## is relative to the BASE_DIR
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'testing_app/templates'),
-                 os.path.join(BASE_DIR, 'testing_app/static'),)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'testing_app/templates'),)
 
 #Should reorder the domain objects on the admin site... the order needs to
 # be this:

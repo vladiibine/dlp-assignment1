@@ -3,7 +3,7 @@ from django.contrib import admin
 
 import dpl1_main.testing_app.urls
 
-admin.autodiscover()
+# admin.autodiscover()
 
 urlpatterns = patterns('',
                        # Examples:

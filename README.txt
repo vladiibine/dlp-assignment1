@@ -110,3 +110,9 @@ Assumptions: You have Python 2.7 (or above) installed:
 
 -This file is a copy of the old README.md file that could itself be added to
 MANIFEST.in file
+
+#TODO: deploying static files (.css)
+    #TODO: make the admin site use the template I choose
+#TODO: some redirect bug? sometimes clicking on the test returns the 'home' page
+#TODO: unit tests with selenium to test the session wrappers
+#TODO: hook up the site with some CSS magic
