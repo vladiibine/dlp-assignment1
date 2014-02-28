@@ -11,4 +11,4 @@ recursive-include dpl1_main/testing_app/static/testing_app/admin/img *.gif *.png
 recursive-include dpl1_main/testing_app/static/testing_app/admin/img/gis *.png
 recursive-include dpl1_main/testing_app/static/testing_app/admin/js *.js
 recursive-include dpl1_main/testing_app/static/testing_app/admin/js/admin *.js
-recursive-include dpl1_main/testing_app/static/testing_app/admin/js/admin *.txt
+recursive-include dpl1_main/testing_app/static/testing_app/admin/js/admin *.js

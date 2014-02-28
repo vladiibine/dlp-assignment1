@@ -202,7 +202,9 @@ class TestWorkflow(TestAbstract):
                                   kwargs={'test_id': self.test1.id,
                                           'page_id': self.t1_page1.id})
 
-        first_page_answers = {'question_1': '3'}
+        first_page_answers = {
+            str(self.t1_p1_question1.as_form_id()): str(
+                self.t1_p1_q1_answer1.id)}
         response = self.client.post(first_page_path,
                                     first_page_answers, follow=True)
         next_page_id = Test.get_next_page_for(self.test1.id, self.t1_page1.id)
@@ -225,7 +227,9 @@ class TestWorkflow(TestAbstract):
                                     follow=True)
         results_url = reverse('results', kwargs={'test_id': self.test1.id})
         #todo: this test can only pass if i modify the user session too...?
-        self.assertRedirects(response, results_url)
+        # self.assertRedirects(response, results_url)
+        self.fail("Couldn't manage to do this test with django test client"
+                  "...should try with selenium or django-webtest")
 
     def _create_session(self, **kwargs):
         session = SessionStore("3c3c3c4b4b4b")
@@ -246,12 +250,14 @@ class TestWorkflow(TestAbstract):
         response_redirected = pages_view(request_redirect,
                                          test_id=self.test1.id,
                                          page_id=self.t1_p5.id)
-        self.assertEqual(302, response_redirected.status_code)
-        request_results = factory.get(response_redirected.url,
-                                      {'answers': answers})
-        request_results.session = self._create_session(**answers)
-        response_results = show_result_view(request_results)
-        self.assertEqual(200, response_redirected.status_code)
+        # self.assertEqual(302, response_redirected.status_code)
+        # request_results = factory.get(response_redirected.url,
+        #                               {'answers': answers})
+        # request_results.session = self._create_session(**answers)
+        # response_results = show_result_view(request_results)
+        # self.assertEqual(200, response_redirected.status_code)
+        self.fail("Couldn't manage to do this test with django test client"
+                  "...should try with selenium or django-webtest")
 
 
 #todo - need to test TestSession!!! - that's the root of all evil

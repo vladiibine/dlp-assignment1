@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-from deployment_util import correct_sys_path
+from dpl1_main.deployment_util import correct_sys_path
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dpl1_main.DPL1.settings")

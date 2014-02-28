@@ -106,6 +106,17 @@ Assumptions: You have Python 2.7 (or above) installed:
         'HOST' - the address an IP address (or domain name) for the server
             hosting the database.
 
+5. Setting up a super user for the administration site
+    5.1. Run the command
+        $ django-admin createsuperuser --settings=your.settings.module.here
+
+        Note that the --settings=... option could be used with the provided
+    dpl1.DPL1.settings module, however you should really use your own settings
+    module.
+
+        You will be prompted to create a super user.
+        With this user you can administer your tests.
+
 
 
 -This file is a copy of the old README.md file that could itself be added to

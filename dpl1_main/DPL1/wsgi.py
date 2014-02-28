@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
 import os
-from deployment_util import correct_sys_path
+from dpl1_main.deployment_util import correct_sys_path
 
 
 

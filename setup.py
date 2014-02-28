@@ -9,7 +9,7 @@ sys.path = list(set(sys.path))
 sys.path.remove(current_dir)
 sys.path.append(deployable_dir)
 
-pprint("~~~VWH::: %s" % str(sys.path))
+# pprint("~~~VWH::: %s" % str(sys.path))
 
 
 def read(fname):
@@ -23,11 +23,11 @@ def read(fname):
 
 
 found_packages = find_packages()
-print "~~~VWH::: %s" % found_packages
+# print "~~~VWH::: %s" % found_packages
 
 setup(
     name="dj-vga-w1",
-    version='0.0.9',
+    version='0.0.18',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"
@@ -40,7 +40,7 @@ setup(
     #todo tell someone about this piece of crap so that they know!!!
     # package_dir={'': './dpl1_main'},
     packages=found_packages,
-    package_data={'': ['*.html', '*.sqlite3', '*.json']},
+    package_data={'': ['*.html', '*.sqlite3', '*.json', '*.css', '*.js']},
     long_description=read('README.txt'),
     classifiers=[
         "Development Status :: 1 - Planning",
