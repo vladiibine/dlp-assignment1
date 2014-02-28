@@ -27,7 +27,7 @@ found_packages = find_packages()
 
 setup(
     name="dj-vga-w1",
-    version='0.0.18',
+    version='0.0.19',
     author='Ardelean Vlad',
     author_email="vlad.ardelean@3pillarglobal.com",
     description=("The Django learning program project - a site where the uses"

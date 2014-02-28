@@ -57,7 +57,7 @@ def home_view(request):
     """
     all_tests = Test.objects.all()
     test_session = TestSession(request.session)
-    test_session.clear_answers()
+    test_session.clear_session()
 
     paginator = TestPaginator(request.session, all_tests, 3)
     next_page = request.GET.get('next_page', False)

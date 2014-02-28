@@ -313,7 +313,7 @@ class TestSessionTest(TestAbstract):
         """
         answers = self._get_answers()
         test_session = self._create_test_session(answers)
-        test_session.clear_answers()
+        test_session.clear_session()
         self.assertTrue(
             not set(answers.keys()).issubset(test_session.answers.keys()))
 

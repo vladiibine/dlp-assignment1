@@ -69,10 +69,16 @@ class TestSession(object):
         self.session['answers'] = self.answers
         self.session.save()
 
-    def clear_answers(self):
+    def clear_session(self):
         """Clears the answers of the previous user session."""
         if 'answers' in self.session:
             self.session.pop('answers')
+        if 'last_page_id' in self.session:
+            self.session.pop('last_page_id')
+        if 'last_test_id' in self.session:
+            self.session.pop('last_test_id')
+        if 'page_id' in self.session:
+            self.session.pop('page_id')
         self.answers = {}
         self.session.save()
 

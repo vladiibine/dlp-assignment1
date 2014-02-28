@@ -52,7 +52,7 @@ Assumptions: You have Python 2.7 (or above) installed:
             custom folder. If the prompt doesn't change, check out the
             documentation for virtualenv http://www.virtualenv.org/en/latest/
 
-3. Install the DPL1 packages from the Pypi.
+3. Install the application packages from the Pypi.
     3.1. Run the command
         $ pip install dj-vga-w1
 
@@ -61,17 +61,24 @@ Assumptions: You have Python 2.7 (or above) installed:
             python installation (inside the active virtual environment, if
              you have such an environment)
 
-    3.2. Testing that the installation worked:
-        3.2.1. Running the tests for the application
+    3.2. Sync your Database: run the command
+        $ django-admin.py syncdb --settings=your.settings.module
+
+        Note that for a settings module, you could use dpl1_main.DPL1.settings,
+            but it's better to provide your own file. If need be, you could
+            simply copy and modify this file.
+
+    3.3. Testing that the installation worked:
+        3.3.1. Running the tests for the application
             $ django-admin.py test dpl1_main.testing_app
                     --settings=dpl1_main.DPL1.settings
 
-        3.2.2. You should see "Creating test database for alias 'default'..."
+        3.3.2. You should see "Creating test database for alias 'default'..."
                 in the output. If this isn't the case,
-        3.2.3. Run the command
+        3.3.3. Run the command
             $ django-admin.py runserver --settings=DPL1.settings
 
-        3.2.4. If the output contains "Validating models..." skip to step 4.
+        3.3.4. If the output contains "Validating models..." skip to step 4.
 
 4. Deployment on apache2 with mod_wsgi
     Notice that in all the examples at step 3 the option --settings=... was
@@ -117,7 +124,13 @@ Assumptions: You have Python 2.7 (or above) installed:
         You will be prompted to create a super user.
         With this user you can administer your tests.
 
+6. Further considerations when using manage.py
+    You should try you best avoiding to execute this module. Instead, you
+        should use `django-admin.py --settings=your.settings.module.here`.
+    Although some operations work when running the manage.py script, their
+        success can't be guaranteed.
 
+    Basically you should ALWAYS USE django-admin.py!!
 
 -This file is a copy of the old README.md file that could itself be added to
 MANIFEST.in file

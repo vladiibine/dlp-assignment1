@@ -70,13 +70,17 @@ WSGI_APPLICATION = 'dpl1_main.DPL1.wsgi.application'
 #     }
 # }
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'vwh_db',
+    #     'PORT': '3306',
+    #     'USER': 'root',
+    #     'PASSWORD': 'qwer',
+    #     'HOST': 'localhost'
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vwh_db',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': 'qwer',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'default.sqlite3',
     }
 }
 
