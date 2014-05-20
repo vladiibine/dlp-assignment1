@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 from dpl1_main.testing_app.models import Test
 from dpl1_main.testing_app.models import Page, Question, Answer
-from testing_app.models import Result
+from dpl1_main.testing_app.models import Result
 
 __author__ = 'vardelean'
 

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7.3 virtualenv at ~/ve/django" project-jdk-type="Python SDK" />
+  <component name="ExportToHTMLSettings">
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/DPL1/.coverage" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7.5+ virtualenv at ~/ve/django_1" project-jdk-type="Python SDK" />
 </project>
 

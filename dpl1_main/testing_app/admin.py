@@ -30,6 +30,10 @@ class PageAdmin(admin.ModelAdmin):
     inlines = (QuestionInline,)
     ordering = ('test', 'sequence')
 
+    # def get_form(self, request, obj=None, **kwargs):
+    #     result_form = super(PageAdmin, self).get_form(request, obj, **kwargs)
+    #     return result_form
+
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = (AnswerInline,)

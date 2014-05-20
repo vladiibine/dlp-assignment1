@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from dpl1_main.testing_app.models import Answer
 
 
 class CustomForm(forms.Form):
@@ -50,3 +51,14 @@ def create_form_for_questions(questions):
     attributes['submittable'] = True
     form = type("DynamicPageForm", bases, attributes)
     return form
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+    pass
+
+    def clean_points(self):
+        import ipdb; ipdb.set_trace()
+        self.cleaned_data['points'] = self.data['points']
+        return self.cleaned_data['points']

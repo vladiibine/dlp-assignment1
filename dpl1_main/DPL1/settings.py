@@ -41,7 +41,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dpl1_main.testing_app',
-    'south'
+    # 'isityaml',
+    'south',
+    'debug_toolbar'
 )
 
 MIDDLEWARE_CLASSES = (

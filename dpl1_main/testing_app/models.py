@@ -150,6 +150,9 @@ class Question(models.Model):
         """
         return u'question_%i' % self.id
 
+class CustomIntegerField(models.IntegerField):
+    pass
+
 
 class Answer(models.Model):
     """Model for the Answer.
@@ -159,7 +162,9 @@ class Answer(models.Model):
     """
     question = models.ForeignKey(Question)
     text = models.CharField(max_length=50)
-    points = models.IntegerField()
+    points = CustomIntegerField()
+    # points = models.CharField(max_length=10)
+    # penis=models.CharField(max_length=10)
 
     class Meta:
         db_table = 'home_answer'

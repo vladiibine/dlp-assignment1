@@ -5,7 +5,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 import django.http
 
-from dpl1_main.testing_app.forms import create_form_for_questions
+from dpl1_main.testing_app.forms import create_form_for_questions, AnswerForm
 from dpl1_main.testing_app.models import Test, Question
 
 # from dpl1_main.testing_app.session_util import TestSession
@@ -13,6 +13,7 @@ from dpl1_main.testing_app.session_util import TestSession, TestPaginator
 from dpl1_main.testing_app.view_util import (get_next_page, save_answers,
                                              validate_navigation,
                                              validate_results)
+from django.db import transaction
 
 
 def error_view(request):
@@ -77,20 +78,22 @@ def pages_view(request, test_id, page_id=1):
         :param page_id
     """
     #Determine next page: either normal page, or results page
+    transaction.set_autocommit(False)
     next_page_id = get_next_page(test_id, page_id)
-
     if request.method == 'POST':
+
         old_questions = Question.objects.filter(page__test_id=test_id,
                                                 page_id=page_id)
         form = create_form_for_questions(old_questions)(request.POST)
-
         if form.is_valid():
             if int(page_id) == Test.get_last_page_for(test_id):
                 redirect_to = reverse('results', kwargs={'test_id': test_id})
+                transaction.commit()
             else:
                 redirect_to = reverse('pages', kwargs={'test_id': test_id,
                                                        'page_id':
                                                            next_page_id})
+                transaction.commit()
             return HttpResponseRedirect(redirect_to)
     else:
         questions = Question.objects.filter(page__test_id=test_id,
@@ -102,4 +105,17 @@ def pages_view(request, test_id, page_id=1):
         context['parent_url'] = request.META.get('HTTP_REFERER')
 
     result = render(request, 'testing_app/test_page.html', context)
+    transaction.commit()
+    return result
+
+
+def form_view(request):
+    af = AnswerForm()
+    result = render(request, 'testing_app/form.html', {'form': af})
+    return result
+
+
+def model_form_view(request):
+    af = AnswerForm()
+    result = render(request, 'testing_app/form.html', {'form': af})
     return result

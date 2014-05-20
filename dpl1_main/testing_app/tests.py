@@ -1,3 +1,5 @@
+from dpl1_main.testing_app.forms import AnswerForm
+from dpl1_main.testing_app.integration_tests import TestWorkflow as TW2
 from django.contrib.sessions.backends.signed_cookies import SessionStore
 from django.core.paginator import EmptyPage
 from django.core.urlresolvers import reverse
@@ -408,4 +410,9 @@ class TestPaginatorTest(TestAbstract):
 
         self.assertEqual(3, page.number)
 
-from dpl1_main.testing_app.integration_tests import TestWorkflow as TW2
+class AnswerFormTest(TestCase):
+    def test_clean_something(self):
+        form = AnswerForm(data={'text':'asdf','points':13})
+        if form.is_valid():
+            pass
+        self.fail()
