@@ -28,5 +28,5 @@ urlpatterns = patterns('testing_app',
                        url(r'^tests/(?P<test_id>\d+)/(?P<page_id>\d+)',
                            views.pages_view, name='pages'),
                        url(r'^404', views.error_view, name='error'),
-                       url(r"^form/", views.form_view, name="form")
+                       url(r"^form/", views.form_view, name="form"),
 )

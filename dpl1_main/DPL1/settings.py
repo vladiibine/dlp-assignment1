@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'dpl1_main.testing_app',
     # 'isityaml',
     'south',
-    'debug_toolbar'
+    'debug_toolbar',
+    'rest_framework'
 )
 
 MIDDLEWARE_CLASSES = (

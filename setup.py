@@ -28,14 +28,18 @@ def read(fname):
 
 
 found_packages = find_packages()
+dependencies = ['django==1.6.1',
+                'south==0.8.4',
+                'djangorestframework==2.3.13',
+                'django-debug-toolbar==1.2.1']
 setup(
-    name="dj-vga-w1",
+    name='dj-vga-w1',
     version='0.0.22',
     author='Ardelean Vlad',
-    author_email="vlad.ardelean@3pillarglobal.com",
-    description=("The Django learning program project - a site where the uses"
-                 "can take tests, and the admins can maintain configurations"
-                 "for these tests"
+    author_email='vlad.ardelean@3pillarglobal.com',
+    description=('The Django learning program project - a site where the uses'
+                 'can take tests, and the admins can maintain configurations'
+                 'for these tests'
     ),
     url='https://github.com/vladiibine/dlp-assignment1',
     keywords="example tutorial django",
@@ -49,6 +53,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: Free For Educational Use",
     ],
-    install_requires=["django==1.6.1", "south==0.8.4"],
+    install_requires=dependencies,
     include_package_data=True
 )
